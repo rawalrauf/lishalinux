@@ -28,7 +28,8 @@ cd ~
 # Date: 2025-12-03
 # Only runs if Limine bootloader and Btrfs filesystem are detected
 
-if [ -d /boot/limine ] && findmnt -n -o FSTYPE / | grep -q btrfs; then
+# Check if Limine is installed (via package or config file)
+if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null | grep -q .) && findmnt -n -o FSTYPE / | grep -q btrfs; then
   echo "Limine bootloader and Btrfs detected. Setting up snapper..."
   
   # Install snapper and required dependencies for limine-snapper-sync
