@@ -1,0 +1,197 @@
+/* Waybar Menu Styling */
+
+/* Main GTK Window - transparent with round corners */
+.main-window {
+    background: transparent;
+    border-radius: 12px;
+}
+
+/* Target the window element directly */
+window.main-window {
+    background: transparent;
+    border-radius: 12px;
+}
+
+/* Also target any potential background elements */
+window.main-window > * {
+    background: transparent;
+    border-radius: 12px;
+}
+
+/* Ensure overlay is transparent */
+overlay {
+    background: transparent;
+}
+
+.main-container {
+    background: rgba(26, 27, 38, 0.95);
+    border-radius: 12px;
+    border: 2px solid #00ffff;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    margin: 0;
+    padding: 15px;
+    min-width: 200px;
+    min-height: 300px;
+}
+
+.sliders-section {
+    padding: 10px;
+    background: rgba(65, 72, 104, 0.3);
+    border-radius: 8px;
+    margin-bottom: 5px;
+}
+
+.slider-control {
+    padding: 8px;
+    margin: 5px 0;
+}
+
+.slider-icon {
+    font-size: 16px;
+    font-weight: bold;
+    color: #7aa2f7;
+    min-width: 25px;
+}
+
+.slider-label {
+    font-weight: 600;
+    color: #c0caf5;
+    font-size: 13px;
+}
+
+.slider-value {
+    font-weight: bold;
+    color: #7aa2f7;
+    font-size: 13px;
+}
+
+.separator {
+    background: #414868;
+    min-height: 1px;
+    margin: 5px 0;
+}
+
+.menu-grid {
+    padding: 10px 0;
+}
+
+.menu-button {
+    background: #24283b;
+    border: 1px solid #414868;
+    border-radius: 10px;
+    padding: 12px 15px;
+    color: #c0caf5;
+    min-width: 140px;
+    min-height: 45px;
+    transition: all 0.2s ease;
+    font-family: "JetBrainsMono Nerd Font";
+}
+
+.menu-button:hover {
+    background: #7aa2f7;
+    color: #1a1b26;
+    border-color: #7aa2f7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(122, 162, 247, 0.3);
+}
+
+.menu-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(122, 162, 247, 0.2);
+}
+
+.menu-icon {
+    font-size: 16px;
+    font-weight: bold;
+    color: inherit;
+}
+
+.menu-text {
+    font-weight: 600;
+    font-size: 13px;
+    color: inherit;
+}
+
+/* Slider Window Styling */
+.slider-container {
+    background: rgba(26, 27, 38, 0.95);
+    border-radius: 12px;
+    border: 2px solid #f7768e;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.slider-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #c0caf5;
+}
+
+.slider-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: #7aa2f7;
+}
+
+.slider {
+    background: #414868;
+    border-radius: 6px;
+    min-height: 30px;
+}
+
+.slider trough {
+    background: #414868;
+    border-radius: 6px;
+    min-height: 8px;
+}
+
+.slider highlight {
+    background: linear-gradient(90deg, #7aa2f7, #bb9af7);
+    border-radius: 6px;
+}
+
+.slider slider {
+    background: #c0caf5;
+    border: 2px solid #7aa2f7;
+    border-radius: 50%;
+    min-width: 20px;
+    min-height: 20px;
+    margin: -6px;
+}
+
+.slider slider:hover {
+    background: #ffffff;
+    box-shadow: 0 0 8px rgba(122, 162, 247, 0.5);
+}
+
+.back-button {
+    background: #565f89;
+    border: 1px solid #7aa2f7;
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: #c0caf5;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.back-button:hover {
+    background: #7aa2f7;
+    color: #1a1b26;
+    transform: translateX(-2px);
+}
+
+/* Hover animations */
+@keyframes buttonPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.menu-button:hover {
+    animation: buttonPulse 0.3s ease;
+}

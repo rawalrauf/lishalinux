@@ -1,0 +1,159 @@
+{
+  "layer": "top",
+  "position": "top",
+  "mod": "dock",
+  "exclusive": true,
+  "passthrough": false,
+  "gtk-layer-shell": true,
+  "height": 25,
+  "modules-left": [
+    "hyprland/workspaces",
+    "wlr/taskbar",
+    "hyprland/window"
+  ],
+  "modules-center": [
+    "cpu",
+    "memory",
+    "custom/screenrecording-indicator"
+  ],
+  "modules-right": [
+    "bluetooth",
+    "network",
+    "backlight",
+    "pulseaudio",
+    "pulseaudio#microphone",
+    "battery",
+    "clock",
+  ],
+  "hyprland/workspaces": {
+    "format": "{icon} {name} ",
+    "format-icons": {
+      "active": "󰔰",
+      "default": "",
+    },
+  },
+
+  "wlr/taskbar": {
+    "format": "{icon}",
+    "icon-size": 18,
+    "tooltip": false,
+    "tooltip-format": "{title}",
+    "on-click": "activate",
+    "active-last": true,
+    "on-click-middle": "close",
+
+  },
+  "hyprland/window": {
+    "format": "{title}",
+    "tooltip": false,
+    "interval": 1,
+    "separate-outputs": true,
+
+  },
+  "cpu": {
+    "interval": 2,
+    "format": "  {icon0}{icon1}{icon2}{icon3} {usage:>2}%",
+    "tooltip": false,
+    "format-icons": [
+      "▁",
+      "▂",
+      "▃",
+      "▄",
+      "▅",
+      "▆",
+      "▇",
+      "█"
+    ],
+  },
+  "memory": {
+    "interval": 30,
+    "tooltip": false,
+    "format": "  {used:0.1f}G",
+  },
+  "clock": {
+    "timezone": "Asia/Karachi",
+    "format": "{:%I:%M %p}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format-alt": "{:%Y-%m-%d}",
+    "interval": 60,
+  },
+  "backlight": {
+    "device": "intel_backlight",
+    "tooltip":false,
+    "format": " {percent}%",
+    "on-scroll-up": "",
+    "on-scroll-down": "",
+  },
+  "battery": {
+    "states": {
+      "good": 95,
+      "warning": 40,
+      "critical": 30,
+    },
+    "format": "{icon} {capacity}%",
+    "format-charging": " {capacity}%",
+    "format-plugged": " {capacity}%",
+    "format-alt": "{time} {icon}",
+    "format-icons": [
+      "󰂎",
+      "󰁺",
+      "󰁻",
+      "󰁼",
+      "󰁽",
+      "󰁾",
+      "󰁿",
+      "󰂀",
+      "󰂁",
+      "󰂂",
+      "󰁹"
+    ],
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "tooltip": false,
+    "format-muted": " Muted",
+    "on-click": "pavucontrol",
+    "on-scroll-up": "",
+    "on-scroll-down": "",
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "default": [
+        " "
+      ],
+    },
+  },
+  "pulseaudio#microphone": {
+    "format": "{format_source}",
+    "format-source": " {volume}%",
+    "format-source-muted": " Muted",
+    "on-click": "pamixer --default-source -t",
+    "on-scroll-up": "",
+    "on-scroll-down": "",
+  },
+  "network": {
+    "on-click":"lishalinux-launch-wifi",
+    "format-wifi": "󰖩 {signalStrength}%",
+    "format-ethernet": "󰈀 {signalStrength}%",
+    "tooltip-format": "{essid} - {ifname} via {gwaddr}",
+    "format-linked": "󰖪",
+    "format-disconnected": "󰖪",
+  },
+  "custom/screenrecording-indicator": {
+    "on-click": "lishalinux-cmd-screenrecord",
+    "exec": "$LISHALINUX_PATH/default/waybar/indicators/screen-recording.sh",
+    "signal": 8,
+    "return-type": "json"
+  },
+  "bluetooth": {
+    "format": " {status}",
+    "format-disabled": "", // an empty format will hide the module
+    "format-connected": " {num_connections}",
+    "tooltip-format": "{device_alias}",
+    "tooltip-format-connected": " {device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}",
+  },
+}

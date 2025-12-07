@@ -1,0 +1,7 @@
+source ~/.local/share/lishalinux/default/bash/shell
+source ~/.local/share/lishalinux/default/bash/aliases
+source ~/.local/share/lishalinux/default/bash/functions
+source ~/.local/share/lishalinux/default/bash/prompt
+source ~/.local/share/lishalinux/default/bash/init
+source ~/.local/share/lishalinux/default/bash/envs
+[[ $- == *i* ]] && bind -f ~/.local/share/lishalinux/default/bash/inputrc

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+lishalinux-restart-app waybar
