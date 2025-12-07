@@ -171,8 +171,8 @@ sudo pacman -S --noconfirm gnome-disk-utility
 # Date: 2025-12-04
 
 # Clone dotfiles repository
-git clone https://github.com/USERNAME/dotfiles ~/dotfiles
-cd ~/dotfiles
+git clone https://github.com/rawalrauf/lishalinux.git ~/lishalinux
+cd ~/lishalinux
 
 # Backup existing configs before replacing
 [ -d ~/.config/alacritty ] && mv ~/.config/alacritty ~/.config/alacritty.backup.$(date +%s)
