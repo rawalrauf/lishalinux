@@ -1,181 +1,130 @@
+#!/bin/bash
 # Arch Linux + Hyprland Personalized Setup
-# Installation Documentation
+# Installation Script
 # Created: 2025-12-03
 # System: Arch Linux with Hyprland
 
-## Setup initialized
-# This file will document every package, configuration, and command
-# for reproducing this setup on a fresh Arch + Hyprland installation
+set -e
 
----
+echo "=========================================="
+echo "  LishaLinux Installation Script"
+echo "=========================================="
+echo ""
+
+# Keep sudo alive throughout the script
+sudo -v
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 ## Base Packages Installation
-# Date: 2025-12-03
+echo "Installing base packages..."
+sudo pacman -S --noconfirm git unzip
 
-# Install essential base packages
-sudo pacman -S --noconfirm git unzip alacritty
+## Install yay AUR helper
+if ! command -v yay &> /dev/null; then
+  echo "Installing yay AUR helper..."
+  cd /tmp
+  git clone https://aur.archlinux.org/yay.git
+  cd yay
+  makepkg -si --noconfirm
+  cd ~
+fi
 
-# Install yay AUR helper
-cd /tmp
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si --noconfirm
-cd ~
+## Install all official repository packages
+echo "Installing official repository packages..."
 
----
+sudo pacman -S --noconfirm \
+  alacritty \
+  playerctl \
+  imv \
+  mpv \
+  ghostty \
+  foliate \
+  jq \
+  gum \
+  nautilus \
+  gvfs \
+  gvfs-mtp \
+  udisks2 \
+  android-udev \
+  blueberry \
+  mako \
+  wl-clipboard \
+  hyprlock \
+  hypridle \
+  hyprpaper \
+  uwsm \
+  fzf \
+  ttf-cascadia-mono-nerd \
+  brightnessctl \
+  impala \
+  hyprsunset \
+  hyprpicker \
+  power-profiles-daemon \
+  pamixer \
+  pavucontrol \
+  gnome-disk-utility
+
+# Install neovim last
+echo "Installing neovim..."
+sudo pacman -S --noconfirm neovim
+
+# Setup LazyVim configuration for neovim
+echo "Setting up LazyVim..."
+if [ -d ~/.config/nvim ]; then
+  mv ~/.config/nvim ~/.config/nvim.backup.$(date +%s)
+fi
+git clone https://github.com/LazyVim/starter ~/.config/nvim
+rm -rf ~/.config/nvim/.git
+
+## Install AUR packages
+echo "Installing AUR packages..."
+
+yay -S --noconfirm \
+  brave-bin \
+  localsend-bin \
+  walker-bin \
+  elephant-bin \
+  elephant-providerlist-bin \
+  elephant-desktopapplications-bin \
+  wayfreeze-git \
+  satty-git \
+  gpu-screen-recorder \
+  waybar-active-last
 
 ## Limine + Snapper Snapshot Setup (Optional)
-# Date: 2025-12-03
-# Only runs if Limine bootloader and Btrfs filesystem are detected
-
-# Check if Limine is installed (via package or config file)
+echo "Checking for Limine and Btrfs..."
 if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null | grep -q .) && findmnt -n -o FSTYPE / | grep -q btrfs; then
   echo "Limine bootloader and Btrfs detected. Setting up snapper..."
   
-  # Install snapper and required dependencies for limine-snapper-sync
+  # Install snapper and dependencies
   sudo pacman -S --noconfirm snapper btrfs-progs inotify-tools jre-openjdk-headless libnotify snap-pac rsync
   
-  # Install limine-mkinitcpio-hook (automates kernel installation and Limine boot entries)
-  yay -S --noconfirm limine-mkinitcpio-hook
+  # Install limine-mkinitcpio-hook and limine-snapper-sync
+  yay -S --noconfirm limine-mkinitcpio-hook limine-snapper-sync
   
-  # Install limine-snapper-sync (syncs Limine snapshot entries with Snapper snapshots)
-  yay -S --noconfirm limine-snapper-sync
-  
-  # Configure snapshot limits (only pacman update snapshots)
+  # Configure snapshot limits
   sudo snapper -c root set-config "NUMBER_LIMIT=5"
   sudo snapper -c root set-config "NUMBER_LIMIT_IMPORTANT=3"
   
-  # Disable timeline snapshots (only keep pacman update snapshots)
+  # Disable timeline snapshots
   sudo snapper -c root set-config "TIMELINE_CREATE=no"
   sudo systemctl disable --now snapper-timeline.timer
   
-  # Enable and start limine-snapper-sync service
+  # Enable limine-snapper-sync service
   sudo systemctl enable --now limine-snapper-sync.service
+  
+  echo "Snapper setup complete!"
 else
   echo "Limine bootloader or Btrfs not detected. Skipping snapper setup."
 fi
 
----
-
-## Essential Applications and Tools
-# Date: 2025-12-03
-
-# Install image viewer
-sudo pacman -S --noconfirm imv
-
-# Install media player
-sudo pacman -S --noconfirm mpv
-
-# Install terminal emulator
-sudo pacman -S --noconfirm ghostty
-
-# Install ebook reader
-sudo pacman -S --noconfirm foliate
-
-# Install neovim
-sudo pacman -S --noconfirm neovim
-
-# Install JSON processor
-sudo pacman -S --noconfirm jq
-
-# Install shell script tool
-sudo pacman -S --noconfirm gum
-
-# Install file manager
-sudo pacman -S --noconfirm nautilus
-
-# Install GVFS and MTP support
-sudo pacman -S --noconfirm gvfs gvfs-mtp
-
-# Install disk management
-sudo pacman -S --noconfirm udisks2
-
-# Install Android device support
-sudo pacman -S --noconfirm android-udev
-
-# Install bluetooth manager
-sudo pacman -S --noconfirm blueberry
-
-# Install clipboard utility
-sudo pacman -S --noconfirm wl-clipboard
-
-# Install Hyprland lock screen
-sudo pacman -S --noconfirm hyprlock
-
-# Install Hyprland idle daemon
-sudo pacman -S --noconfirm hypridle
-
-# Install Hyprland wallpaper manager
-sudo pacman -S --noconfirm hyprpaper
-
-# Install status bar (patched version with active-last feature)
-# Using AUR package: waybar-active-last
-# This version includes a patch that adds "active-last: true" config option
-# to move the active window icon to the rightmost position in wlr-taskbar
-yay -S --noconfirm waybar-active-last
-
-# Install Wayland session manager
-sudo pacman -S --noconfirm uwsm
-
-
-# Install fuzzyFinder
-sudo pacman -S --noconfirm fzf
-
-
-# Install Cascadia Mono Nerd Font
-sudo pacman -S --noconfirm ttf-cascadia-mono-nerd
-
-# Install Brave browser from AUR
-yay -S --noconfirm brave-bin
-
-# Install LocalSend from AUR
-yay -S --noconfirm localsend-bin
-
-# Install Walker launcher and Elephant AI assistant from AUR
-yay -S --noconfirm walker-bin elephant-bin elephant-providerlist-bin elephant-dektopapplicaions-bin
-
-# Install screenshot dependencies from AUR
-yay -S --noconfirm wayfreeze-git satty-git
-
-# Setup LazyVim configuration for neovim
-git clone https://github.com/LazyVim/starter ~/.config/nvim
-rm -rf ~/.config/nvim/.git
-
----
-## Additional System Utilities
-# Date: 2025-12-04
-
-# Install brightness control
-sudo pacman -S --noconfirm brightnessctl
-
-# Install color temperature adjustment
-sudo pacman -S --noconfirm hyprsunset
-
-# Install color picker
-sudo pacman -S --noconfirm hyprpicker
-
-# Install power profile management
-sudo pacman -S --noconfirm power-profiles-daemon
-
-# Install audio control
-sudo pacman -S --noconfirm pamixer
-
-## Install audio volume control GUI
-sudo pacman -S --noconfirm pavucontrol
-
- Install Disk manager
-sudo pacman -S --noconfirm gnome-disk-utility
-
----
-
 ## Configuration Files Setup
-# Date: 2025-12-04
+echo "Setting up configuration files..."
 
-# Clone dotfiles repository
-git clone https://github.com/rawalrauf/lishalinux.git ~/lishalinux
 cd ~/lishalinux
 
-# Backup existing configs before replacing
+# Backup existing configs
+echo "Backing up existing configurations..."
 [ -d ~/.config/alacritty ] && mv ~/.config/alacritty ~/.config/alacritty.backup.$(date +%s)
 [ -d ~/.config/elephant ] && mv ~/.config/elephant ~/.config/elephant.backup.$(date +%s)
 [ -d ~/.config/mako ] && mv ~/.config/mako ~/.config/mako.backup.$(date +%s)
@@ -183,26 +132,36 @@ cd ~/lishalinux
 [ -d ~/.config/waybar ] && mv ~/.config/waybar ~/.config/waybar.backup.$(date +%s)
 [ -d ~/.config/uwsm ] && mv ~/.config/uwsm ~/.config/uwsm.backup.$(date +%s)
 [ -d ~/.config/hypr ] && mv ~/.config/hypr ~/.config/hypr.backup.$(date +%s)
+[ -d ~/.local/share/applications ] && mv ~/.local/share/applications ~/.local/share/applications.backup.$(date +%s)
 [ -f ~/.config/mimeapps.list ] && mv ~/.config/mimeapps.list ~/.config/mimeapps.list.backup.$(date +%s)
 
-# Copy configuration files to .config
+# Copy configuration files
+echo "Copying configuration files..."
 cp -r alacritty elephant mako walker waybar uwsm hypr ~/.config/
 cp mimeapps.list ~/.config/
 
 # Copy desktop applications
-cp -r applications/* ~/.local/share/applications/
+cp -r applications ~/.local/share/
 
 # Copy lishalinux scripts
 cp -r lishalinux ~/.local/share/
 
-# Make lishalinux scripts executable
-chmod +x ~/.local/share/lishalinux/bin/*.sh
-
-# Install gpu-screen-recorder from AUR
-yay -S --noconfirm gpu-screen-recorder
-
-# Make waybar indicator script of gpu-screen-recorder executable
+# Make scripts executable
+chmod +x ~/.local/share/lishalinux/bin/*
 chmod +x ~/.local/share/lishalinux/default/waybar/indicators/screen-recording.sh
 
+echo ""
+echo "=========================================="
+echo "  Installation Complete!"
+echo "=========================================="
+echo ""
 
----
+# Ask for reboot
+read -p "Would you like to reboot now? (y/n): " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  echo "Rebooting..."
+  sudo reboot
+else
+  echo "Please reboot manually to apply all changes."
+fi
