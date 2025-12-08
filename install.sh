@@ -13,14 +13,18 @@ echo ""
 
 # Keep sudo alive throughout the script
 sudo -v
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+while true; do
+  sudo -n true
+  sleep 60
+  kill -0 "$$" || exit
+done 2>/dev/null &
 
 ## Base Packages Installation
 echo "Installing base packages..."
 sudo pacman -S --noconfirm git unzip
 
 ## Install yay AUR helper
-if ! command -v yay &> /dev/null; then
+if ! command -v yay &>/dev/null; then
   echo "Installing yay AUR helper..."
   cd /tmp
   git clone https://aur.archlinux.org/yay.git
@@ -35,7 +39,7 @@ echo "Installing official repository packages..."
 sudo pacman -S --noconfirm \
   alacritty \
   playerctl \
-  imv \
+  pqiv \
   mpv \
   ghostty \
   foliate \
@@ -63,6 +67,7 @@ sudo pacman -S --noconfirm \
   pamixer \
   pavucontrol \
   gnome-disk-utility
+  evince \
 
 # Install neovim last
 echo "Installing neovim..."
@@ -95,24 +100,24 @@ yay -S --noconfirm \
 echo "Checking for Limine and Btrfs..."
 if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null | grep -q .) && findmnt -n -o FSTYPE / | grep -q btrfs; then
   echo "Limine bootloader and Btrfs detected. Setting up snapper..."
-  
+
   # Install snapper and dependencies
   sudo pacman -S --noconfirm snapper btrfs-progs inotify-tools jre-openjdk-headless libnotify snap-pac rsync
-  
+
   # Install limine-mkinitcpio-hook and limine-snapper-sync
   yay -S --noconfirm limine-mkinitcpio-hook limine-snapper-sync
-  
+
   # Configure snapshot limits
   sudo snapper -c root set-config "NUMBER_LIMIT=5"
   sudo snapper -c root set-config "NUMBER_LIMIT_IMPORTANT=3"
-  
+
   # Disable timeline snapshots
   sudo snapper -c root set-config "TIMELINE_CREATE=no"
   sudo systemctl disable --now snapper-timeline.timer
-  
+
   # Enable limine-snapper-sync service
   sudo systemctl enable --now limine-snapper-sync.service
-  
+
   echo "Snapper setup complete!"
 else
   echo "Limine bootloader or Btrfs not detected. Skipping snapper setup."

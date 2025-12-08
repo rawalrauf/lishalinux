@@ -1,10 +1,10 @@
 [Default Applications]
-image/png=imv.desktop
-image/jpeg=imv.desktop
-image/gif=imv.desktop
-image/webp=imv.desktop
-image/bmp=imv.desktop
-image/tiff=imv.desktop
+image/png=pqiv.desktop
+image/jpeg=pqiv.desktop
+image/gif=pqiv.desktop
+image/webp=pqiv.desktop
+image/bmp=pqiv.desktop
+image/tiff=pqiv.desktop
 application/pdf=org.gnome.Evince.desktop
 text/html=brave-browser.desktop
 x-scheme-handler/http=brave-browser.desktop

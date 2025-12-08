@@ -139,7 +139,7 @@ show_setup_menu() {
   options="$options\n  Defaults\n  Config"
 
   case $(menu "Setup" "$options") in
-  *Audio*) $TERMINAL --class=Wiremix -e wiremix ;;
+  *Audio*) pavucontrol ;;
   *Wifi*)
     rfkill unblock wifi
     lishalinux-launch-wifi
