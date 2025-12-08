@@ -145,6 +145,12 @@ echo "Copying configuration files..."
 cp -r alacritty elephant mako walker waybar uwsm hypr ~/.config/
 cp mimeapps.list ~/.config/
 
+# Copy browser flags
+[ -f ~/.config/brave-flags.conf ] && mv ~/.config/brave-flags.conf ~/.config/brave-flags.conf.backup.$(date +%s)
+[ -f ~/.config/chromium-flags.conf ] && mv ~/.config/chromium-flags.conf ~/.config/chromium-flags.conf.backup.$(date +%s)
+cp brave-flags.conf ~/.config/
+cp chromium-flags.conf ~/.config/
+
 # Copy desktop applications
 cp -r applications ~/.local/share/
 
