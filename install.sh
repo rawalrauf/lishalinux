@@ -80,9 +80,8 @@ sudo pacman -S --noconfirm neovim
 
 # Setup LazyVim configuration for neovim
 echo "Setting up LazyVim..."
-if [ -d ~/.config/nvim ]; then
-  mv ~/.config/nvim ~/.config/nvim.backup.$(date +%s)
-fi
+[ -d ~/.config/nvim ] && mv ~/.config/nvim ~/.config/nvim.backup.$(date +%s)
+
 git clone https://github.com/LazyVim/starter ~/.config/nvim
 rm -rf ~/.config/nvim/.git
 
@@ -143,6 +142,8 @@ echo "Backing up existing configurations..."
 [ -d ~/.config/uwsm ] && mv ~/.config/uwsm ~/.config/uwsm.backup.$(date +%s)
 [ -d ~/.config/hypr ] && mv ~/.config/hypr ~/.config/hypr.backup.$(date +%s)
 [ -d ~/.local/share/applications ] && mv ~/.local/share/applications ~/.local/share/applications.backup.$(date +%s)
+[ -d ~/.local/share/lishalinux ] && mv ~/.local/share/lishalinux ~/.local/share/lishalinux.backup.$(date +%s)
+
 [ -f ~/.config/mimeapps.list ] && mv ~/.config/mimeapps.list ~/.config/mimeapps.list.backup.$(date +%s)
 [ -f ~/.bashrc ] && mv ~/.bashrc ~/.bashrc.backup.$(date +%s)
 
