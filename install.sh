@@ -67,7 +67,12 @@ sudo pacman -S --noconfirm \
   pamixer \
   pavucontrol \
   gnome-disk-utility \
-  evince
+  evince \
+  eza \
+  bat \
+  zoxide \
+  starship \
+  ffmpeg
 
 # Install neovim last
 echo "Installing neovim..."
@@ -139,11 +144,13 @@ echo "Backing up existing configurations..."
 [ -d ~/.config/hypr ] && mv ~/.config/hypr ~/.config/hypr.backup.$(date +%s)
 [ -d ~/.local/share/applications ] && mv ~/.local/share/applications ~/.local/share/applications.backup.$(date +%s)
 [ -f ~/.config/mimeapps.list ] && mv ~/.config/mimeapps.list ~/.config/mimeapps.list.backup.$(date +%s)
+[ -f ~/.bashrc ] && mv ~/.bashrc ~/.bashrc.backup.$(date +%s)
 
 # Copy configuration files
 echo "Copying configuration files..."
 cp -r alacritty elephant mako walker waybar uwsm hypr ~/.config/
 cp mimeapps.list ~/.config/
+cp bashrc ~/.bashrc
 
 # Copy browser flags
 [ -f ~/.config/brave-flags.conf ] && mv ~/.config/brave-flags.conf ~/.config/brave-flags.conf.backup.$(date +%s)
@@ -160,6 +167,10 @@ cp -r lishalinux ~/.local/share/
 # Make scripts executable
 chmod +x ~/.local/share/lishalinux/bin/*
 chmod +x ~/.local/share/lishalinux/default/waybar/indicators/screen-recording.sh
+
+# Reload bashrc to apply changes
+echo "Reloading shell configuration..."
+source ~/.bashrc
 
 echo ""
 echo "=========================================="
