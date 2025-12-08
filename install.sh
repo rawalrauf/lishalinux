@@ -66,8 +66,8 @@ sudo pacman -S --noconfirm \
   power-profiles-daemon \
   pamixer \
   pavucontrol \
-  gnome-disk-utility
-  evince \
+  gnome-disk-utility \
+  evince
 
 # Install neovim last
 echo "Installing neovim..."
