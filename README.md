@@ -6,8 +6,6 @@ A personalized Arch Linux + Hyprland setup with curated dotfiles and automated i
 
 LishaLinux is a complete desktop environment configuration for **Arch Linux + Hyprland** with UWSM session management. It provides a modern, efficient Wayland desktop experience with custom scripts and optimized configurations.
 
-**Note:** More features are being added regularly!
-
 ## Requirements
 
 - **Fresh Arch Linux installation**
@@ -50,8 +48,6 @@ The script will:
 - Copy configuration files
 - Prompt for reboot
 
-**Note:** You'll only enter sudo password once.
-
 ## What Gets Installed?
 
 - **Core**: Hyprland ecosystem, terminals, editors, browsers
@@ -86,6 +82,3 @@ git pull
 ./install.sh
 ```
 
-## Credits
-
-Created by Rawal Rauf
