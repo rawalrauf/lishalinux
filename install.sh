@@ -135,6 +135,7 @@ cd ~/lishalinux
 # Backup existing configs
 echo "Backing up existing configurations..."
 [ -d ~/.config/alacritty ] && mv ~/.config/alacritty ~/.config/alacritty.backup.$(date +%s)
+[ -d ~/.config/ghostty ] && mv ~/.config/ghostty ~/.config/ghostty.backup.$(date +%s)
 [ -d ~/.config/elephant ] && mv ~/.config/elephant ~/.config/elephant.backup.$(date +%s)
 [ -d ~/.config/mako ] && mv ~/.config/mako ~/.config/mako.backup.$(date +%s)
 [ -d ~/.config/walker ] && mv ~/.config/walker ~/.config/walker.backup.$(date +%s)
@@ -146,11 +147,13 @@ echo "Backing up existing configurations..."
 
 [ -f ~/.config/mimeapps.list ] && mv ~/.config/mimeapps.list ~/.config/mimeapps.list.backup.$(date +%s)
 [ -f ~/.bashrc ] && mv ~/.bashrc ~/.bashrc.backup.$(date +%s)
+[ -f ~/.config/starship.toml ] && mv ~/.config/starship.toml ~/.config/starship.toml.backup.$(date +%s)
 
 # Copy configuration files
 echo "Copying configuration files..."
-cp -r alacritty elephant mako walker waybar uwsm hypr ~/.config/
+cp -r alacritty ghostty elephant mako walker waybar uwsm hypr ~/.config/
 cp mimeapps.list ~/.config/
+cp starship.toml ~/.config/
 cp bashrc ~/.bashrc
 
 # Copy browser flags
