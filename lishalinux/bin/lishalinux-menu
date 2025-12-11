@@ -139,15 +139,9 @@ show_setup_menu() {
   options="$options\n  Defaults\n  Config"
 
   case $(menu "Setup" "$options") in
-  *Audio*) pavucontrol ;;
-  *Wifi*)
-    rfkill unblock wifi
-    lishalinux-launch-wifi
-    ;;
-  *Bluetooth*)
-    rfkill unblock bluetooth
-    blueberry
-    ;;
+  *Audio*) lishalinux-launch-or-focus-tui wiremix ;;
+  *Wifi*) lishalinux-launch-wifi ;;
+  *Bluetooth*) lishalinux-launch-bluetooth ;;
   *Power*) show_setup_power_menu ;;
   *Monitors*) open_in_editor ~/.config/hypr/monitors.conf ;;
   *Keybindings*) open_in_editor ~/.config/hypr/bindings.conf ;;
