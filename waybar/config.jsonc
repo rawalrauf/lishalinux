@@ -112,7 +112,7 @@
     "format": "{icon} {volume}%",
     "tooltip": false,
     "format-muted": " Muted",
-    "on-click": "pavucontrol",
+    "on-click": "omarchy-launch-or-focus-tui wiremix",
     "on-scroll-up": "",
     "on-scroll-down": "",
     "format-icons": {
