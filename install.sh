@@ -65,7 +65,7 @@ sudo pacman -S --noconfirm \
   hyprpicker \
   power-profiles-daemon \
   pamixer \
-  pavucontrol \
+  wiremix \
   gnome-disk-utility \
   evince \
   eza \
