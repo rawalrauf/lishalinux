@@ -50,7 +50,7 @@ sudo pacman -S --noconfirm \
   gvfs-mtp \
   udisks2 \
   android-udev \
-  blueberry \
+  bluetui \
   mako \
   wl-clipboard \
   hyprlock \
