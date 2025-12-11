@@ -50,7 +50,7 @@ sudo pacman -S --noconfirm \
   gvfs-mtp \
   udisks2 \
   android-udev \
-  bluetui \
+  blueberry \
   mako \
   wl-clipboard \
   hyprlock \
@@ -65,7 +65,7 @@ sudo pacman -S --noconfirm \
   hyprpicker \
   power-profiles-daemon \
   pamixer \
-  wiremix \
+  pavucontrol \
   gnome-disk-utility \
   evince \
   eza \

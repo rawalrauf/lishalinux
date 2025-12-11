@@ -112,7 +112,7 @@
     "format": "{icon} {volume}%",
     "tooltip": false,
     "format-muted": " Muted",
-    "on-click": "omarchy-launch-or-focus-tui wiremix",
+    "on-click": "pavucontrol",
     "on-scroll-up": "",
     "on-scroll-down": "",
     "format-icons": {
@@ -155,6 +155,5 @@
     "tooltip-format": "{device_alias}",
     "tooltip-format-connected": " {device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias}",
-    "on-click": "lishalinux-launch-bluetooth"
   },
 }
