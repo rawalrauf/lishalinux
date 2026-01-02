@@ -98,7 +98,8 @@ yay -S --noconfirm \
   wayfreeze-git \
   satty-git \
   gpu-screen-recorder \
-  waybar-active-last
+  waybar-active-last \
+  xdg-terminal-exec
 
 ## Limine + Snapper Snapshot Setup (Optional)
 echo "Checking for Limine and Btrfs..."
@@ -148,6 +149,7 @@ echo "Backing up existing configurations..."
 [ -f ~/.config/mimeapps.list ] && mv ~/.config/mimeapps.list ~/.config/mimeapps.list.backup.$(date +%s)
 [ -f ~/.bashrc ] && mv ~/.bashrc ~/.bashrc.backup.$(date +%s)
 [ -f ~/.config/starship.toml ] && mv ~/.config/starship.toml ~/.config/starship.toml.backup.$(date +%s)
+[ -f ~/.config/xdg-terminals.list ] && mv ~/.config/xdg-terminals.list ~/.config/xdg-terminals.list.backup.$(date +%s)
 
 # Copy configuration files
 echo "Copying configuration files..."
@@ -155,6 +157,7 @@ cp -r alacritty ghostty elephant mako walker waybar uwsm hypr ~/.config/
 cp mimeapps.list ~/.config/
 cp starship.toml ~/.config/
 cp bashrc ~/.bashrc
+cp xdg-terminals.list ~/.config/
 
 # Copy browser flags
 [ -f ~/.config/brave-flags.conf ] && mv ~/.config/brave-flags.conf ~/.config/brave-flags.conf.backup.$(date +%s)
