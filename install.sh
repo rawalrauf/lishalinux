@@ -42,7 +42,6 @@ sudo pacman -S --noconfirm \
   pqiv \
   mpv \
   ghostty \
-  foliate \
   jq \
   gum \
   nautilus \
@@ -91,10 +90,6 @@ echo "Installing AUR packages..."
 yay -S --noconfirm \
   brave-bin \
   localsend-bin \
-  walker-bin \
-  elephant-bin \
-  elephant-providerlist-bin \
-  elephant-desktopapplications-bin \
   wayfreeze-git \
   satty-git \
   gpu-screen-recorder \
@@ -107,7 +102,7 @@ if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null |
   echo "Limine bootloader and Btrfs detected. Setting up snapper..."
 
   # Install snapper and dependencies
-  sudo pacman -S --noconfirm snapper btrfs-progs inotify-tools jre-openjdk-headless libnotify snap-pac rsync
+  sudo pacman -S --noconfirm snapper btrfs-progs inotify-tools libnotify snap-pac rsync
 
   # Install limine-mkinitcpio-hook and limine-snapper-sync
   yay -S --noconfirm limine-mkinitcpio-hook limine-snapper-sync
