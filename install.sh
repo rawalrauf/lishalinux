@@ -123,6 +123,19 @@ else
   echo "Limine bootloader or Btrfs not detected. Skipping snapper setup."
 fi
 
+## Add Omarchy repository for walker
+echo "Adding Omarchy repository for walker..."
+if ! grep -q "\[omarchy\]" /etc/pacman.conf; then
+  echo -e "\n[omarchy]\nSigLevel = Optional TrustAll\nInclude = /etc/pacman.d/omarchy-mirrorlist" | sudo tee -a /etc/pacman.conf
+fi
+
+if [ ! -f /etc/pacman.d/omarchy-mirrorlist ]; then
+  echo "Server = https://pkgs.omarchy.org/stable/\$arch" | sudo tee /etc/pacman.d/omarchy-mirrorlist
+fi
+
+sudo pacman -Sy
+sudo pacman -S --noconfirm omarchy-walker
+
 ## Configuration Files Setup
 echo "Setting up configuration files..."
 
