@@ -1,4 +1,7 @@
 #!/bin/bash
 
+# Launch a floating terminal with the Lishalinux logo presentation, then execute the command passed in, and finally end with the lishalinux-show-done presentation.
+# Used by actions such as Update System.
+
 cmd="$*"
-exec setsid uwsm-app -- alacritty -o font.size=9 --class=LishaLinux --title=LishaLinux -e bash -c "$cmd; lishalinux-show-done"
+exec setsid uwsm-app -- xdg-terminal-exec --app-id=org.lishalinux.terminal --title=Lishalinux -e bash -c "lishalinux-show-logo; $cmd; if [ \$? -ne 130 ]; then lishalinux-show-done; fi"

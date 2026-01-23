@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Launch the Lishalinux audio controls TUI (provided by wiremix).
+
+lishalinux-launch-or-focus-tui wiremix

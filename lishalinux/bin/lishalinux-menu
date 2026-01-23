@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Launch the Lishalinux Menu or takes a parameter to jump straight to a submenu.
+
 export PATH="$HOME/.local/share/lishalinux/bin:$PATH"
 
 # Set to true when going directly to a submenu, so we can exit directly
@@ -33,11 +35,11 @@ menu() {
     fi
   fi
 
-  echo -e "$options" | lishalinux-launch-walker --dmenu --width 295 --minheight 1 --maxheight 600 -p "$prompt…" "${args[@]}" 2>/dev/null
+  echo -e "$options" | lishalinux-launch-walker --dmenu --width 295 --minheight 1 --maxheight 630 -p "$prompt…" "${args[@]}" 2>/dev/null
 }
 
 terminal() {
-  alacritty --class=LishaLinux -e "$@"
+  xdg-terminal-exec --app-id=org.lishalinux.terminal "$@"
 }
 
 present_terminal() {
@@ -55,6 +57,14 @@ install() {
 
 install_and_launch() {
   present_terminal "echo 'Installing $1...'; sudo pacman -S --noconfirm $2 && setsid gtk-launch $3"
+}
+
+install_font() {
+  present_terminal "echo 'Installing $1...'; sudo pacman -S --noconfirm --needed $2 && sleep 2 && lishalinux-font-set '$3'"
+}
+
+install_terminal() {
+  present_terminal "lishalinux-install-terminal $1"
 }
 
 aur_install() {
@@ -77,11 +87,10 @@ show_learn_menu() {
 }
 
 show_trigger_menu() {
-  case $(menu "Trigger" "󰄀  Capture\n󰒖  Share\n󰨚  Toggle\n󰊲  Re-Launch") in
+  case $(menu "Trigger" "  Capture\n  Share\n󰔎  Toggle") in
   *Capture*) show_capture_menu ;;
   *Share*) show_share_menu ;;
   *Toggle*) show_toggle_menu ;;
-  *Re-Launch*) show_trigger_restart_menu ;;
   *) show_main_menu ;;
   esac
 }
@@ -103,20 +112,53 @@ show_screenshot_menu() {
   esac
 }
 
+get_webcam_list() {
+  v4l2-ctl --list-devices 2>/dev/null | while IFS= read -r line; do
+    if [[ "$line" != $'\t'* && -n "$line" ]]; then
+      local name="$line"
+      IFS= read -r device || break
+      device=$(echo "$device" | tr -d '\t' | head -1)
+      [[ -n "$device" ]] && echo "$device  $name"
+    fi
+  done
+}
+
+show_webcam_select_menu() {
+  local devices=$(get_webcam_list)
+  local count=$(echo "$devices" | grep -c . 2>/dev/null || echo 0)
+
+  if [[ -z "$devices" || "$count" -eq 0 ]]; then
+    notify-send "No webcam devices found" -u critical -t 3000
+    return 1
+  fi
+
+  if [[ "$count" -eq 1 ]]; then
+    echo "$devices" | awk '{print $1}'
+  else
+    menu "Select Webcam" "$devices" | awk '{print $1}'
+  fi
+}
+
 show_screenrecord_menu() {
-  case $(menu "Screenrecord" "  Region\n  Region + Audio\n  Display\n  Display + Audio\n  Display + Webcam") in
-  *"Region + Audio"*) lishalinux-cmd-screenrecord region --with-audio ;;
-  *Region*) lishalinux-cmd-screenrecord ;;
-  *"Display + Audio"*) lishalinux-cmd-screenrecord output --with-audio ;;
-  *"Display + Webcam"*) lishalinux-cmd-screenrecord output --with-audio --with-webcam ;;
-  *Display*) lishalinux-cmd-screenrecord output ;;
+  lishalinux-cmd-screenrecord --stop-recording && exit 0
+
+  case $(menu "Screenrecord" "  With desktop audio\n  With desktop + microphone audio\n  With desktop + microphone audio + webcam") in
+  *"With desktop audio") lishalinux-cmd-screenrecord --with-desktop-audio ;;
+  *"With desktop + microphone audio") lishalinux-cmd-screenrecord --with-desktop-audio --with-microphone-audio ;;
+  *"With desktop + microphone audio + webcam")
+    local device=$(show_webcam_select_menu) || {
+      back_to show_capture_menu
+      return
+    }
+    lishalinux-cmd-screenrecord --with-desktop-audio --with-microphone-audio --with-webcam --webcam-device="$device"
+    ;;
   *) back_to show_capture_menu ;;
   esac
 }
 
 show_share_menu() {
   case $(menu "Share" "  Clipboard\n  File \n  Folder") in
-  *Clipboard*) terminal bash -c "lishalinux-cmd-share clipboard" ;;
+  *Clipboard*) lishalinux-cmd-share clipboard ;;
   *File*) terminal bash -c "lishalinux-cmd-share file" ;;
   *Folder*) terminal bash -c "lishalinux-cmd-share folder" ;;
   *) back_to show_trigger_menu ;;
@@ -133,26 +175,21 @@ show_toggle_menu() {
 }
 
 show_setup_menu() {
-  local options="  Audio\n  Wifi\n󰂯  Bluetooth\n󱐋  Power Profile\n󰍹  Monitors"
+  local options="  Audio\n  Wifi\n󰂯  Bluetooth\n󱐋  Power Profile\n  System Sleep\n󰍹  Monitors"
   [ -f ~/.config/hypr/bindings.conf ] && options="$options\n  Keybindings"
   [ -f ~/.config/hypr/input.conf ] && options="$options\n  Input"
-  options="$options\n  Defaults\n  Config"
+  options="$options\n󰱔  DNS\n  Config"
 
   case $(menu "Setup" "$options") in
-  *Audio*) pavucontrol ;;
-  *Wifi*)
-    rfkill unblock wifi
-    lishalinux-launch-wifi
-    ;;
-  *Bluetooth*)
-    rfkill unblock bluetooth
-    blueberry
-    ;;
+  *Audio*) lishalinux-launch-audio ;;
+  *Wifi*) lishalinux-launch-wifi ;;
+  *Bluetooth*) lishalinux-launch-bluetooth ;;
   *Power*) show_setup_power_menu ;;
+  *System*) show_setup_system_menu ;;
   *Monitors*) open_in_editor ~/.config/hypr/monitors.conf ;;
   *Keybindings*) open_in_editor ~/.config/hypr/bindings.conf ;;
   *Input*) open_in_editor ~/.config/hypr/input.conf ;;
-  *Defaults*) open_in_editor ~/.config/uwsm/default ;;
+  *DNS*) present_terminal lishalinux-setup-dns ;;
   *Config*) show_setup_config_menu ;;
   *) show_main_menu ;;
   esac
@@ -169,14 +206,38 @@ show_setup_power_menu() {
 }
 
 show_setup_config_menu() {
-  case $(menu "Setup" "  Hyprland\n󰒲  Hypridle\n󰌾  Hyprlock\n󰖔  Hyprsunset\n󰌧  Walker\n󰍜  Waybar") in
+  case $(menu "Setup" "  Defaults\n  Hyprland\n  Hypridle\n  Hyprlock\n  Hyprsunset\n󰌧  Walker\n󰍜  Waybar") in
+  *Defaults*) open_in_editor ~/.config/uwsm/default ;;
   *Hyprland*) open_in_editor ~/.config/hypr/hyprland.conf ;;
-  *Hypridle*) open_in_editor ~/.config/hypr/hypridle.conf ;;
+  *Hypridle*) open_in_editor ~/.config/hypr/hypridle.conf && lishalinux-restart-hypridle ;;
   *Hyprlock*) open_in_editor ~/.config/hypr/hyprlock.conf ;;
-  *Hyprsunset*) open_in_editor ~/.config/hypr/hyprsunset.conf ;;
-  *Walker*) open_in_editor ~/.config/walker/config.toml ;;
-  *Waybar*) open_in_editor ~/.config/waybar/config.jsonc ;;
-  *) show_main_menu ;;
+  *Hyprsunset*) open_in_editor ~/.config/hypr/hyprsunset.conf && lishalinux-restart-hyprsunset ;;
+  *Walker*) open_in_editor ~/.config/walker/config.toml && lishalinux-restart-walker ;;
+  *Waybar*) open_in_editor ~/.config/waybar/config.jsonc && lishalinux-restart-waybar ;;
+  *) show_setup_menu ;;
+  esac
+}
+
+show_setup_system_menu() {
+  local options=""
+
+  if [ -f ~/.local/state/lishalinux/toggles/suspend-on ]; then
+    options="$options󰒲  Disable Suspend"
+  else
+    options="$options󰒲  Enable Suspend"
+  fi
+
+  if lishalinux-hibernation-available; then
+    options="$options\n󰤁  Disable Hibernate"
+  else
+    options="$options\n󰤁  Enable Hibernate"
+  fi
+
+  case $(menu "System" "$options") in
+  *Suspend*) lishalinux-toggle-suspend ;;
+  *"Enable Hibernate"*) present_terminal lishalinux-hibernation-setup ;;
+  *"Disable Hibernate"*) present_terminal lishalinux-hibernation-remove ;;
+  *) show_setup_menu ;;
   esac
 }
 
@@ -200,8 +261,10 @@ show_remove_menu() {
 }
 
 show_update_menu() {
-  case $(menu "Update" "󰣇  System\n  Firmware\n  Password\n  Timezone\n󰅐  Time") in
-  *System*) present_terminal lishalinux-update ;;
+  case $(menu "Update" " Lishalinux\n  Process\n󰇅  Hardware\n  Firmware\n  Password\n  Timezone\n  Time") in
+  *Lishalinux*) present_terminal lishalinux-update ;;
+  *Process*) show_update_process_menu ;;
+  *Hardware*) show_update_hardware_menu ;;
   *Firmware*) present_terminal lishalinux-update-firmware ;;
   *Timezone*) present_terminal lishalinux-tz-select ;;
   *Time*) present_terminal lishalinux-update-time ;;
@@ -211,47 +274,50 @@ show_update_menu() {
 }
 
 show_update_process_menu() {
-  case $(menu "Re-Launch" "󰍜  Waybar") in
+  case $(menu "Restart" "  Hypridle\n  Hyprsunset\n󰌧  Walker\n󰍜  Waybar") in
+  *Hypridle*) lishalinux-restart-hypridle ;;
+  *Hyprsunset*) lishalinux-restart-hyprsunset ;;
+  *Walker*) lishalinux-restart-walker ;;
   *Waybar*) lishalinux-restart-waybar ;;
   *) show_update_menu ;;
   esac
 }
 
-show_update_config_menu() {
-  case $(menu "Use default config" "  Config refresh removed - not needed") in
-  *) show_update_menu ;;
-  esac
-}
-
-show_trigger_restart_menu() {
-  case $(menu "Re-Launch" "󰕾  Audio\n󱚾  Wi-Fi\n󰂯  Bluetooth\n󰍜  Waybar") in
+show_update_hardware_menu() {
+  case $(menu "Restart" "  Audio\n󱚾  Wi-Fi\n󰂯  Bluetooth") in
   *Audio*) present_terminal lishalinux-restart-pipewire ;;
   *Wi-Fi*) present_terminal lishalinux-restart-wifi ;;
   *Bluetooth*) present_terminal lishalinux-restart-bluetooth ;;
-  *Waybar*) lishalinux-restart-waybar ;;
-  *) show_trigger_menu ;;
+  *) show_update_menu ;;
   esac
 }
 
 show_update_password_menu() {
-  case $(menu "Update Password" "  User") in
+  case $(menu "Update Password" "  Drive Encryption\n  User") in
+  *Drive*) present_terminal lishalinux-drive-set-password ;;
   *User*) present_terminal passwd ;;
   *) show_update_menu ;;
   esac
 }
 
 show_system_menu() {
-  case $(menu "System" "󰌾  Lock\n󰤄  Suspend\n󰜉  Restart\n󰐥  Shutdown") in
+  local options="  Lock"
+  [ -f ~/.local/state/lishalinux/toggles/suspend-on ] && options="$options\n󰒲  Suspend"
+  lishalinux-hibernation-available && options="$options\n󰤁  Hibernate"
+  options="$options\n󰜉  Restart\n󰐥  Shutdown"
+
+  case $(menu "System" "$options") in
   *Lock*) lishalinux-lock-screen ;;
   *Suspend*) systemctl suspend ;;
-  *Restart*) systemctl reboot --no-wall ;;
-  *Shutdown*) systemctl poweroff --no-wall ;;
+  *Hibernate*) systemctl hibernate ;;
+  *Restart*) lishalinux-cmd-reboot ;;
+  *Shutdown*) lishalinux-cmd-shutdown ;;
   *) back_to show_main_menu ;;
   esac
 }
 
 show_main_menu() {
-  go_to_menu "$(menu "Go" "󰀻  Apps\n󰧑  Learn\n󱓞  Trigger\n󰒓  Setup\n󰉉  Install\n󰭌  Remove\n󰚰  Update\n  System")"
+  go_to_menu "$(menu "Go" "󰀻  Apps\n󰧑  Learn\n󱓞  Trigger\n  Setup\n󰉉  Install\n󰭌  Remove\n  Update\n  System")"
 }
 
 go_to_menu() {
@@ -260,6 +326,7 @@ go_to_menu() {
   *learn*) show_learn_menu ;;
   *trigger*) show_trigger_menu ;;
   *share*) show_share_menu ;;
+  *theme*) show_theme_menu ;;
   *screenshot*) show_screenshot_menu ;;
   *screenrecord*) show_screenrecord_menu ;;
   *setup*) show_setup_menu ;;
@@ -270,6 +337,10 @@ go_to_menu() {
   *system*) show_system_menu ;;
   esac
 }
+
+# Allow user extensions and overrides
+USER_EXTENSIONS="$HOME/.config/lishalinux/extensions/menu.sh"
+[[ -f $USER_EXTENSIONS ]] && source "$USER_EXTENSIONS"
 
 if [[ -n "$1" ]]; then
   BACK_TO_EXIT=true
