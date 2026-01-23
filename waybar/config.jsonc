@@ -92,6 +92,7 @@
     },
     "format": "{icon} {capacity}%",
     "format-charging": " {capacity}%",
+    "on-click": "lishalinux-menu power",
     "format-plugged": " {capacity}%",
     "format-alt": "{time} {icon}",
     "format-icons": [
@@ -112,7 +113,7 @@
     "format": "{icon} {volume}%",
     "tooltip": false,
     "format-muted": " Muted",
-    "on-click": "pavucontrol",
+    "on-click": "lishalinux-launch-audio",
     "on-scroll-up": "",
     "on-scroll-down": "",
     "format-icons": {
@@ -155,5 +156,6 @@
     "tooltip-format": "{device_alias}",
     "tooltip-format-connected": " {device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias}",
+    "on-click": "lishalinux-launch-bluetooth",
   },
 }

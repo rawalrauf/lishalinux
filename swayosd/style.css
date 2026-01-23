@@ -1,0 +1,32 @@
+/* Core colors */
+@define-color background-color #1a1b26;
+@define-color border-color     #414868;
+
+/* Single foreground color for ALL elements */
+@define-color fg               #cdd6f4;
+
+window {
+  border-radius: 0;
+  opacity: 0.97;
+  border: 2px solid @border-color;
+  background-color: @background-color;
+}
+
+label {
+  font-family: 'Cascadia Mono Nerd Font';
+  font-size: 11pt;
+  color: @fg;
+}
+
+image {
+  color: @fg;
+}
+
+progressbar {
+  border-radius: 0;
+}
+
+progress {
+  background-color: @fg;
+}
+

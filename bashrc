@@ -9,3 +9,5 @@ source ~/.local/share/lishalinux/default/bash/rc
 #
 # Make an alias for invoking commands you use constantly
 # alias p='python'
+
+export PATH="$HOME/.local/bin:$PATH"

@@ -37,7 +37,6 @@ fi
 echo "Installing official repository packages..."
 
 sudo pacman -S --noconfirm \
-  alacritty \
   playerctl \
   pqiv \
   mpv \
@@ -53,6 +52,10 @@ sudo pacman -S --noconfirm \
   mako \
   wl-clipboard \
   hyprlock \
+  swayosd \
+  wiremix \
+  gnome-calculator \
+  btop \
   hypridle \
   hyprpaper \
   uwsm \
@@ -64,7 +67,6 @@ sudo pacman -S --noconfirm \
   hyprpicker \
   power-profiles-daemon \
   pamixer \
-  pavucontrol \
   gnome-disk-utility \
   evince \
   eza \
@@ -143,8 +145,9 @@ cd ~/lishalinux
 
 # Backup existing configs
 echo "Backing up existing configurations..."
-[ -d ~/.config/alacritty ] && mv ~/.config/alacritty ~/.config/alacritty.backup.$(date +%s)
 [ -d ~/.config/ghostty ] && mv ~/.config/ghostty ~/.config/ghostty.backup.$(date +%s)
+[ -d ~/.config/autostart ] && mv ~/.config/autostart ~/.config/autostart.backup.$(date +%s)
+[ -d ~/.config/swayosd ] && mv ~/.config/swayosd ~/.config/swayosd.backup.$(date +%s)
 [ -d ~/.config/elephant ] && mv ~/.config/elephant ~/.config/elephant.backup.$(date +%s)
 [ -d ~/.config/mako ] && mv ~/.config/mako ~/.config/mako.backup.$(date +%s)
 [ -d ~/.config/walker ] && mv ~/.config/walker ~/.config/walker.backup.$(date +%s)
@@ -161,7 +164,7 @@ echo "Backing up existing configurations..."
 
 # Copy configuration files
 echo "Copying configuration files..."
-cp -r alacritty ghostty elephant mako walker waybar uwsm hypr ~/.config/
+cp -r ghostty swayosd elephant mako walker waybar uwsm autostart hypr ~/.config/
 cp mimeapps.list ~/.config/
 cp starship.toml ~/.config/
 cp bashrc ~/.bashrc
@@ -178,6 +181,11 @@ cp -r applications ~/.local/share/
 
 # Copy lishalinux scripts
 cp -r lishalinux ~/.local/share/
+
+# Run elephant as systemd service and walker autostart on login
+elephant service enable
+systemctl --user start elephant.service
+setsid walker --gapplication-service &
 
 # Make scripts executable
 chmod +x ~/.local/share/lishalinux/bin/*
