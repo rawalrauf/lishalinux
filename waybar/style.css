@@ -47,9 +47,14 @@ tooltip{
 
 }
 
+#taskbar{
+  padding: 0;
+  margin-left:-10px;
+}
+
 #taskbar button{
   all:initial;
-  padding: 0 10px;
+  padding: 0 10px ;
 }
 #window {
     margin-left:-10px;
