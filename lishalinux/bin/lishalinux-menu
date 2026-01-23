@@ -261,7 +261,7 @@ show_remove_menu() {
 }
 
 show_update_menu() {
-  case $(menu "Update" " Lishalinux\n  Process\n󰇅  Hardware\n  Firmware\n  Password\n  Timezone\n  Time") in
+  case $(menu "Update" " Lishalinux\n  Process\n󰇅  Hardware\n  Firmware\n  Password\n  Timezone\n  Time") in
   *Lishalinux*) present_terminal lishalinux-update ;;
   *Process*) show_update_process_menu ;;
   *Hardware*) show_update_hardware_menu ;;
