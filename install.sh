@@ -21,7 +21,7 @@ done 2>/dev/null &
 
 ## Base Packages Installation
 echo "Installing base packages..."
-sudo pacman -S --noconfirm git unzip
+sudo pacman -S --noconfirm base-devel git unzip
 
 ## Install yay AUR helper
 if ! command -v yay &>/dev/null; then
@@ -69,6 +69,7 @@ sudo pacman -S --noconfirm \
   power-profiles-daemon \
   pamixer \
   gnome-disk-utility \
+  xdg-desktop-portal-gtk \
   evince \
   eza \
   bat \
@@ -195,6 +196,9 @@ chmod +x ~/.local/share/lishalinux/default/waybar/indicators/screen-recording.sh
 # Reload bashrc to apply changes
 echo "Reloading shell configuration..."
 source ~/.bashrc
+
+# Enable darkmode for gnome applications
+gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
 
 echo ""
 echo "=========================================="
