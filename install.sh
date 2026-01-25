@@ -101,9 +101,9 @@ yay -S --noconfirm \
   xdg-terminal-exec
 
 ## Limine + Snapper Snapshot Setup (Optional)
-echo "Checking for Limine and Btrfs..."
-if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null | grep -q .) && findmnt -n -o FSTYPE / | grep -q btrfs; then
-  echo "Limine bootloader and Btrfs detected. Setting up snapper..."
+echo "Checking for Limine, Btrfs and UEFI..."
+if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null | grep -q .) && findmnt -n -o FSTYPE / | grep -q btrfs && [[ -d /sys/firmware/efi ]]; then
+  echo "Limine bootloader, Btrfs and UEFI detected. Setting up snapper..."
 
   # Install snapper and dependencies
   sudo pacman -S --noconfirm snapper btrfs-progs inotify-tools libnotify snap-pac rsync
@@ -124,7 +124,7 @@ if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null |
 
   echo "Snapper setup complete!"
 else
-  echo "Limine bootloader or Btrfs not detected. Skipping snapper setup."
+  echo "Limine bootloader, Btrfs or UEFI not detected. Skipping snapper setup."
 fi
 
 ## Add Omarchy repository for walker
