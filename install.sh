@@ -47,7 +47,7 @@ sudo pacman -S --noconfirm \
   gvfs \
   gvfs-mtp \
   udisks2 \
-  hyprpolkitagent \
+  polkit-gnome \
   android-udev \
   bluetui \
   mako \
