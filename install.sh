@@ -70,6 +70,7 @@ sudo pacman -S --noconfirm \
   pamixer \
   gnome-disk-utility \
   xdg-desktop-portal-gtk \
+  lazygit \
   evince \
   eza \
   bat \
