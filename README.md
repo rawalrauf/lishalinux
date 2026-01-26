@@ -5,7 +5,6 @@ A personalized Arch Linux + Hyprland setup with curated dotfiles.
 ## Requirements
 
 - **Works Best With Fresh Arch Install (via archinstall sript)**
-- **Boost System** - UEFI
 - **Hyprland** installed
 - **SDDM** display manager
 - **UWSM-managed Hyprland session** (Already configured if you select hyprland+SSDM during archinstall script)
@@ -13,6 +12,7 @@ A personalized Arch Linux + Hyprland setup with curated dotfiles.
 
 ### Optional (If You Want Snapshot Rollbacks)
 - **Limine bootloader** - For snapshot boot menu integration
+- **Boost System** - UEFI
 - **UKI** (Unified Kernal Image) Enabled
 - **Btrfs filesystem** - For automatic snapshots and system recovery
 - **Snapshots** Snapper

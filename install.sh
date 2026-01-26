@@ -6,12 +6,7 @@
 
 set -e
 
-echo ""
-echo -e "\033[1;36m=============================================="
-echo "      LishaLinux Installation Script"
-echo "=============================================="
-echo ""
-sleep 2
+echo -e "\n\n\e[1;38;2;162;221;157m<========== Lishalinux Installation Script ==========>\e[0m\n\n"
 
 # Keep sudo alive throughout the script
 sudo -v
@@ -21,24 +16,14 @@ while true; do
   kill -0 "$$" || exit
 done 2>/dev/null &
 
-## Base Packages Installation
-echo ""
-echo -e "\033[1;36m=============================================="
-echo "      Installing Base Packages"
-echo "=============================================="
-echo ""
+echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing AUR Dependencies ==========>\e[0m\n\n"
 sleep 2
 
 sudo pacman -S --noconfirm base-devel git unzip
 
-## Install yay AUR helper
 if ! command -v yay &>/dev/null; then
 
-  echo ""
-  echo -e "\033[1;36m=============================================="
-  echo "      Installing AUR helper yay"
-  echo "=============================================="
-  echo ""
+  echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing AUR Helper YAY ==========>\e[0m\n\n"
   sleep 2
 
   cd /tmp
@@ -48,12 +33,7 @@ if ! command -v yay &>/dev/null; then
   cd ~
 fi
 
-## Install all official repository packages
-echo ""
-echo -e "\033[1;36m=============================================="
-echo "      Installing Required Packages"
-echo "=============================================="
-echo ""
+echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing Required Pacman Packages ==========>\e[0m\n\n"
 sleep 2
 
 sudo pacman -S --noconfirm \
@@ -97,12 +77,7 @@ sudo pacman -S --noconfirm \
   starship \
   ffmpeg
 
-# Install neovim last
-echo ""
-echo -e "\033[1;36m=============================================="
-echo "      Installing Neovim as Editor"
-echo "=============================================="
-echo ""
+echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing Neovim(LazyVim) Editor ==========>\e[0m\n\n"
 sleep 2
 
 sudo pacman -S --noconfirm neovim
@@ -113,13 +88,7 @@ sudo pacman -S --noconfirm neovim
 git clone https://github.com/LazyVim/starter ~/.config/nvim
 rm -rf ~/.config/nvim/.git
 
-## Install AUR packages
-echo ""
-echo -e "\033[1;36m=============================================="
-echo "      Installing AUR Packages"
-echo "=============================================="
-echo ""
-sleep 2
+echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing Required AUR Packages With YAY ==========>\e[0m\n\n"
 
 yay -S --noconfirm \
   brave-bin \
@@ -130,41 +99,23 @@ yay -S --noconfirm \
   waybar-active-last \
   xdg-terminal-exec
 
-## Limine + Snapper Snapshot Setup (Optional)
-echo ""
-echo -e "\033[1;36m=============================================="
-echo "      Detecting Limine, Snapper & UEFI"
-echo "=============================================="
-echo ""
+echo -e "\n\n\e[1;38;2;162;221;157m<========== Detecting Limine Bootloader, Btrfs File System & UEFI ==========>\e[0m\n\n"
 sleep 2
 
 if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null | grep -q .) && findmnt -n -o FSTYPE / | grep -q btrfs && [[ -d /sys/firmware/efi ]]; then
 
-  echo ""
-  echo -e "\033[1;36m=============================================="
-  echo "      Detected, Installing Packages"
-  echo "=============================================="
-  echo ""
+  echo -e "\n\n\e[1;38;2;162;221;157m<========== Limine, Btrfs & UEFI Detected, Installing Dependencies ==========>\e[0m\n\n"
   sleep 2
 
   # Install snapper and dependencies
   sudo pacman -S --noconfirm snapper btrfs-progs inotify-tools libnotify snap-pac rsync jre-openjdk-headless
 
-  echo ""
-  echo -e "\033[1;36m=============================================="
-  echo "      Installing GUI for Rollbacks"
-  echo "=============================================="
-  echo ""
-  sleep 2
+  echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing limine-snapper-sync For Easy Rollbacks ==========>\e[0m\n\n"
 
   # Install limine-mkinitcpio-hook and limine-snapper-sync
   yay -S --noconfirm limine-mkinitcpio-hook limine-snapper-sync
 
-  echo ""
-  echo -e "\033[1;36m=============================================="
-  echo "      Configuring Snapper & Limine"
-  echo "=============================================="
-  echo ""
+  echo -e "\n\n\e[1;38;2;162;221;157m<========== Configuring Limine and Snapper ==========>\e[0m\n\n"
   sleep 2
 
   # Configure snapshot limits
@@ -178,23 +129,16 @@ if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null |
   # Enable limine-snapper-sync service
   sudo systemctl enable --now limine-snapper-sync.service
 
-  echo ""
-  echo -e "\033[1;36m=============================================="
-  echo "      Snapper & Limine Setup Complete"
-  echo "=============================================="
-  echo ""
-  sleep 2
+  echo -e "\n\n\e[1;38;2;162;221;157m<========== Snapshots Rollbacks Setup Complete ==========>\e[0m\n\n"
 
 else
   echo "Limine bootloader, Btrfs or UEFI not detected. Skipping snapper setup."
+  echo -e "\n\n\e[1;38;2;162;221;157m<========== Limine Bootloader, Btrfs or UEFI not Detected, Skipping Snapper Setup ==========>\e[0m\n\n"
+  sleep 2
+
 fi
 
-## Add repository for walker
-echo ""
-echo -e "\033[1;36m=============================================="
-echo "      Add Repository For Walker Install"
-echo "=============================================="
-echo ""
+echo -e "\n\n\e[1;38;2;162;221;157m<========== Adding Stable Repository for Walker ==========>\e[0m\n\n"
 sleep 2
 
 if ! grep -q "\[omarchy\]" /etc/pacman.conf; then
@@ -206,24 +150,24 @@ if [ ! -f /etc/pacman.d/omarchy-mirrorlist ]; then
 fi
 
 sudo pacman -Sy
+
+echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing Walker and its Dependencies ==========>\e[0m\n\n"
+sleep 2
 sudo pacman -S --noconfirm omarchy-walker
 
-## Configuration Files Setup
-echo ""
-echo -e "\033[1;36m=============================================="
-echo "      Configuration Files Setup"
-echo "=============================================="
-echo ""
+echo -e "\n\n\e[1;38;2;162;221;157m<========== Autostart Walker and Run Elephant as Systemd Service  ==========>\e[0m\n\n"
+sleep 2
+
+pkill elephant
+elephant service enable
+systemctl --user start elephant.service
+pkill walker
+setsid walker --gapplication-service &
+
+echo -e "\n\n\e[1;38;2;162;221;157m<========== Creating Backup For Existing Configs ==========>\e[0m\n\n"
+sleep 2
 
 cd ~/lishalinux
-sleep2
-
-# Backup existing configs
-echo ""
-echo -e "\033[1;36m=============================================="
-echo "      Backup User Configurations"
-echo "=============================================="
-echo ""
 
 [ -d ~/.config/ghostty ] && mv ~/.config/ghostty ~/.config/ghostty.backup.$(date +%s)
 [ -d ~/.config/autostart ] && mv ~/.config/autostart ~/.config/autostart.backup.$(date +%s)
@@ -241,16 +185,10 @@ echo ""
 [ -f ~/.bashrc ] && mv ~/.bashrc ~/.bashrc.backup.$(date +%s)
 [ -f ~/.config/starship.toml ] && mv ~/.config/starship.toml ~/.config/starship.toml.backup.$(date +%s)
 [ -f ~/.config/xdg-terminals.list ] && mv ~/.config/xdg-terminals.list ~/.config/xdg-terminals.list.backup.$(date +%s)
+
+echo -e "\n\n\e[1;38;2;162;221;157m<========== Copying Lishalinux Configs To Desired Locations ==========>\e[0m\n\n"
 sleep 2
 
-# Copy configuration files
-echo ""
-echo -e "\033[1;36m=============================================="
-echo "      Copy Configurations Files"
-echo "=============================================="
-echo ""
-
-echo "Copying configuration files..."
 cp -r ghostty swayosd elephant mako walker waybar uwsm autostart hypr ~/.config/
 cp mimeapps.list ~/.config/
 cp starship.toml ~/.config/
@@ -268,77 +206,39 @@ cp -r applications ~/.local/share/
 
 # Copy lishalinux scripts
 cp -r lishalinux ~/.local/share/
-sleep 2
 
-# Run elephant as systemd service and walker autostart on login
-echo ""
-echo -e "\033[1;36m=============================================="
-echo "      Walker Autostart On Login"
-echo "=============================================="
-echo ""
-
-pkill elephant
-elephant service enable
-systemctl --user start elephant.service
-pkill walker
-setsid walker --gapplication-service &
+echo -e "\n\n\e[1;38;2;162;221;157m<========== Making Scripts Executable ==========>\e[0m\n\n"
 sleep 2
-# Make scripts executable
-echo ""
-echo -e "\033[1;36m=============================================="
-echo "      Make Scripts Executable"
-echo "=============================================="
-echo ""
 
 chmod +x ~/.local/share/lishalinux/bin/*
 chmod +x ~/.local/share/lishalinux/default/waybar/indicators/screen-recording.sh
 sleep 2
 
-# Reload bashrc to apply changes
-echo ""
-echo -e "\033[1;36m=============================================="
-echo "      Reload Bashrc To Apply Changes"
-echo "=============================================="
-echo ""
+echo -e "\n\n\e[1;38;2;162;221;157m<========== Reloading Bashrc for Changes to Work ==========>\e[0m\n\n"
+sleep 2
 
 source ~/.bashrc
+
+echo -e "\n\n\e[1;38;2;162;221;157m<========== Enable Darkmode for Gnome Applications ==========>\e[0m\n\n"
 sleep 2
-# Enable darkmode for gnome applications
-echo ""
-echo -e "\033[1;36m=============================================="
-echo "      Darkmode For Gnome Applications"
-echo "=============================================="
-echo ""
 
 gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
-sleep 2
 
-echo ""
-echo "=========================================="
-echo "  Installation Complete!"
-echo "=========================================="
-echo ""
+echo -e "\n\n\e[1;38;2;162;221;157m<========== Installation Complete, Reboot for Changes to Work ==========>\e[0m\n\n"
+sleep 2
 
 # Ask for reboot
 read -p "Would you like to reboot now? (y/n): " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
 
-  echo ""
-  echo -e "\033[1;36m=============================================="
-  echo "      All Set, Now Rebooting"
-  echo "=============================================="
-  echo ""
+  echo -e "\n\n\e[1;38;2;162;221;157m<========== Rebooting in 2 Seconds ==========>\e[0m\n\n"
   sleep 2
 
   sudo reboot
 else
 
-  echo ""
-  echo -e "\033[1;36m=============================================="
-  echo "      Reboot To Apply Changes"
-  echo "=============================================="
-  echo ""
+  echo -e "\n\n\e[1;38;2;162;221;157m<========== Please Reboot for Changes to Work ==========>\e[0m\n\n"
   sleep 2
 
 fi
