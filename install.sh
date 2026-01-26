@@ -6,10 +6,12 @@
 
 set -e
 
-echo "=========================================="
-echo "  LishaLinux Installation Script"
-echo "=========================================="
 echo ""
+echo -e "\033[1;36m=============================================="
+echo "      LishaLinux Installation Script"
+echo "=============================================="
+echo ""
+sleep 2
 
 # Keep sudo alive throughout the script
 sudo -v
@@ -20,12 +22,25 @@ while true; do
 done 2>/dev/null &
 
 ## Base Packages Installation
-echo "Installing base packages..."
+echo ""
+echo -e "\033[1;36m=============================================="
+echo "      Installing Base Packages"
+echo "=============================================="
+echo ""
+sleep 2
+
 sudo pacman -S --noconfirm base-devel git unzip
 
 ## Install yay AUR helper
 if ! command -v yay &>/dev/null; then
-  echo "Installing yay AUR helper..."
+
+  echo ""
+  echo -e "\033[1;36m=============================================="
+  echo "      Installing AUR helper yay"
+  echo "=============================================="
+  echo ""
+  sleep 2
+
   cd /tmp
   git clone https://aur.archlinux.org/yay.git
   cd yay
@@ -34,7 +49,12 @@ if ! command -v yay &>/dev/null; then
 fi
 
 ## Install all official repository packages
-echo "Installing official repository packages..."
+echo ""
+echo -e "\033[1;36m=============================================="
+echo "      Installing Required Packages"
+echo "=============================================="
+echo ""
+sleep 2
 
 sudo pacman -S --noconfirm \
   playerctl \
@@ -78,18 +98,28 @@ sudo pacman -S --noconfirm \
   ffmpeg
 
 # Install neovim last
-echo "Installing neovim..."
+echo ""
+echo -e "\033[1;36m=============================================="
+echo "      Installing Neovim as Editor"
+echo "=============================================="
+echo ""
+sleep 2
+
 sudo pacman -S --noconfirm neovim
 
 # Setup LazyVim configuration for neovim
-echo "Setting up LazyVim..."
 [ -d ~/.config/nvim ] && mv ~/.config/nvim ~/.config/nvim.backup.$(date +%s)
 
 git clone https://github.com/LazyVim/starter ~/.config/nvim
 rm -rf ~/.config/nvim/.git
 
 ## Install AUR packages
-echo "Installing AUR packages..."
+echo ""
+echo -e "\033[1;36m=============================================="
+echo "      Installing AUR Packages"
+echo "=============================================="
+echo ""
+sleep 2
 
 yay -S --noconfirm \
   brave-bin \
@@ -101,15 +131,41 @@ yay -S --noconfirm \
   xdg-terminal-exec
 
 ## Limine + Snapper Snapshot Setup (Optional)
-echo "Checking for Limine, Btrfs and UEFI..."
+echo ""
+echo -e "\033[1;36m=============================================="
+echo "      Detecting Limine, Snapper & UEFI"
+echo "=============================================="
+echo ""
+sleep 2
+
 if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null | grep -q .) && findmnt -n -o FSTYPE / | grep -q btrfs && [[ -d /sys/firmware/efi ]]; then
-  echo "Limine bootloader, Btrfs and UEFI detected. Setting up snapper..."
+
+  echo ""
+  echo -e "\033[1;36m=============================================="
+  echo "      Detected, Installing Packages"
+  echo "=============================================="
+  echo ""
+  sleep 2
 
   # Install snapper and dependencies
-  sudo pacman -S --noconfirm snapper btrfs-progs inotify-tools libnotify snap-pac rsync
+  sudo pacman -S --noconfirm snapper btrfs-progs inotify-tools libnotify snap-pac rsync jre-openjdk-headless
+
+  echo ""
+  echo -e "\033[1;36m=============================================="
+  echo "      Installing GUI for Rollbacks"
+  echo "=============================================="
+  echo ""
+  sleep 2
 
   # Install limine-mkinitcpio-hook and limine-snapper-sync
   yay -S --noconfirm limine-mkinitcpio-hook limine-snapper-sync
+
+  echo ""
+  echo -e "\033[1;36m=============================================="
+  echo "      Configuring Snapper & Limine"
+  echo "=============================================="
+  echo ""
+  sleep 2
 
   # Configure snapshot limits
   sudo snapper -c root set-config "NUMBER_LIMIT=5"
@@ -122,13 +178,25 @@ if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null |
   # Enable limine-snapper-sync service
   sudo systemctl enable --now limine-snapper-sync.service
 
-  echo "Snapper setup complete!"
+  echo ""
+  echo -e "\033[1;36m=============================================="
+  echo "      Snapper & Limine Setup Complete"
+  echo "=============================================="
+  echo ""
+  sleep 2
+
 else
   echo "Limine bootloader, Btrfs or UEFI not detected. Skipping snapper setup."
 fi
 
-## Add Omarchy repository for walker
-echo "Adding Omarchy repository for walker..."
+## Add repository for walker
+echo ""
+echo -e "\033[1;36m=============================================="
+echo "      Add Repository For Walker Install"
+echo "=============================================="
+echo ""
+sleep 2
+
 if ! grep -q "\[omarchy\]" /etc/pacman.conf; then
   echo -e "\n[omarchy]\nSigLevel = Optional TrustAll\nInclude = /etc/pacman.d/omarchy-mirrorlist" | sudo tee -a /etc/pacman.conf
 fi
@@ -141,12 +209,22 @@ sudo pacman -Sy
 sudo pacman -S --noconfirm omarchy-walker
 
 ## Configuration Files Setup
-echo "Setting up configuration files..."
+echo ""
+echo -e "\033[1;36m=============================================="
+echo "      Configuration Files Setup"
+echo "=============================================="
+echo ""
 
 cd ~/lishalinux
+sleep2
 
 # Backup existing configs
-echo "Backing up existing configurations..."
+echo ""
+echo -e "\033[1;36m=============================================="
+echo "      Backup User Configurations"
+echo "=============================================="
+echo ""
+
 [ -d ~/.config/ghostty ] && mv ~/.config/ghostty ~/.config/ghostty.backup.$(date +%s)
 [ -d ~/.config/autostart ] && mv ~/.config/autostart ~/.config/autostart.backup.$(date +%s)
 [ -d ~/.config/swayosd ] && mv ~/.config/swayosd ~/.config/swayosd.backup.$(date +%s)
@@ -163,8 +241,15 @@ echo "Backing up existing configurations..."
 [ -f ~/.bashrc ] && mv ~/.bashrc ~/.bashrc.backup.$(date +%s)
 [ -f ~/.config/starship.toml ] && mv ~/.config/starship.toml ~/.config/starship.toml.backup.$(date +%s)
 [ -f ~/.config/xdg-terminals.list ] && mv ~/.config/xdg-terminals.list ~/.config/xdg-terminals.list.backup.$(date +%s)
+sleep 2
 
 # Copy configuration files
+echo ""
+echo -e "\033[1;36m=============================================="
+echo "      Copy Configurations Files"
+echo "=============================================="
+echo ""
+
 echo "Copying configuration files..."
 cp -r ghostty swayosd elephant mako walker waybar uwsm autostart hypr ~/.config/
 cp mimeapps.list ~/.config/
@@ -183,22 +268,50 @@ cp -r applications ~/.local/share/
 
 # Copy lishalinux scripts
 cp -r lishalinux ~/.local/share/
+sleep 2
 
 # Run elephant as systemd service and walker autostart on login
+echo ""
+echo -e "\033[1;36m=============================================="
+echo "      Walker Autostart On Login"
+echo "=============================================="
+echo ""
+
+pkill elephant
 elephant service enable
 systemctl --user start elephant.service
+pkill walker
 setsid walker --gapplication-service &
-
+sleep 2
 # Make scripts executable
+echo ""
+echo -e "\033[1;36m=============================================="
+echo "      Make Scripts Executable"
+echo "=============================================="
+echo ""
+
 chmod +x ~/.local/share/lishalinux/bin/*
 chmod +x ~/.local/share/lishalinux/default/waybar/indicators/screen-recording.sh
+sleep 2
 
 # Reload bashrc to apply changes
-echo "Reloading shell configuration..."
-source ~/.bashrc
+echo ""
+echo -e "\033[1;36m=============================================="
+echo "      Reload Bashrc To Apply Changes"
+echo "=============================================="
+echo ""
 
+source ~/.bashrc
+sleep 2
 # Enable darkmode for gnome applications
+echo ""
+echo -e "\033[1;36m=============================================="
+echo "      Darkmode For Gnome Applications"
+echo "=============================================="
+echo ""
+
 gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+sleep 2
 
 echo ""
 echo "=========================================="
@@ -210,8 +323,22 @@ echo ""
 read -p "Would you like to reboot now? (y/n): " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-  echo "Rebooting..."
+
+  echo ""
+  echo -e "\033[1;36m=============================================="
+  echo "      All Set, Now Rebooting"
+  echo "=============================================="
+  echo ""
+  sleep 2
+
   sudo reboot
 else
-  echo "Please reboot manually to apply all changes."
+
+  echo ""
+  echo -e "\033[1;36m=============================================="
+  echo "      Reboot To Apply Changes"
+  echo "=============================================="
+  echo ""
+  sleep 2
+
 fi
