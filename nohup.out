@@ -1,9 +1,0 @@
-[27458:27458:0127/021416.123692:ERROR:dbus/object_proxy.cc:573] Failed to call method: org.kde.KWallet.open: object_path= /modules/kwalletd6: org.freedesktop.DBus.Error.NoReply: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
-[27458:27458:0127/021416.123732:ERROR:components/os_crypt/sync/kwallet_dbus.cc:166] Error contacting kwalletd6 (open)
-
-(brave:27544): libsecret-WARNING **: 02:14:37.701: received unexpected result type ao from Completed signal instead of expected o
-
-(brave:27544): GLib-GIO-CRITICAL **: 02:14:37.701: g_task_return_error: assertion 'error != NULL' failed
-
-(brave:27544): GLib-GIO-CRITICAL **: 02:14:37.701: GTask secret_service_real_prompt_async (source object: 0xb7400013290, source tag: 0x7f0f84facfd0) finalized without ever returning (using g_task_return_*()). This potentially indicates a bug in the program.
-[27544:27572:0127/025312.101941:FATAL:dbus/bus.cc:1246] D-Bus connection was disconnected. Aborting.
