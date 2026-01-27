@@ -70,6 +70,8 @@ sudo pacman -S --noconfirm \
   pamixer \
   gnome-disk-utility \
   xdg-desktop-portal-gtk \
+  gnome-themes-extra \
+  yaru-icon-theme \
   lazygit \
   evince \
   eza \
@@ -225,6 +227,8 @@ echo -e "\n\n\e[1;38;2;162;221;157m<========== Enable Darkmode for Gnome Applica
 sleep 2
 
 gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+gsettings set org.gnome.desktop.interface icon-theme 'Yaru-purple'
 
 echo -e "\n\n\e[1;38;2;162;221;157m<========== Installation Complete, Reboot for Changes to Work ==========>\e[0m\n\n"
 sleep 2
