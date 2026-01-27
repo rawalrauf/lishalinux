@@ -113,6 +113,9 @@ if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null |
 
   echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing limine-snapper-sync For Easy Rollbacks ==========>\e[0m\n\n"
 
+  # Remove/backup conflicting /boot/limine/limine.conf, cause /boot/limine.conf already available
+  [ -f /boot/limine.conf ] && [ -f /boot/limine/limine.conf ] && sudo mv /boot/limine/limine.conf /boot/limine/limine.conf.backup.$(date +%s)
+
   # Install limine-mkinitcpio-hook and limine-snapper-sync
   yay -S --noconfirm limine-mkinitcpio-hook limine-snapper-sync
 
@@ -159,10 +162,10 @@ sudo pacman -S --noconfirm omarchy-walker
 echo -e "\n\n\e[1;38;2;162;221;157m<========== Autostart Walker and Run Elephant as Systemd Service  ==========>\e[0m\n\n"
 sleep 2
 
-pkill elephant
+pkill elephant || echo "elephant is not running, starting it now"
 elephant service enable
 systemctl --user start elephant.service
-pkill walker
+pkill walker || echo "walker is not running, starting it now"
 setsid walker --gapplication-service &
 
 echo -e "\n\n\e[1;38;2;162;221;157m<========== Creating Backup For Existing Configs ==========>\e[0m\n\n"
