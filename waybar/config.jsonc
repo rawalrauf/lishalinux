@@ -92,7 +92,6 @@
     },
     "format": "{icon} {capacity}%",
     "format-charging": " {capacity}%",
-    "on-click": "lishalinux-menu power",
     "format-plugged": " {capacity}%",
     "format-alt": "{time} {icon}",
     "format-icons": [
