@@ -19,7 +19,7 @@ done 2>/dev/null &
 echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing AUR Dependencies ==========>\e[0m\n\n"
 sleep 2
 
-sudo pacman -S --noconfirm base-devel git unzip
+sudo pacman -S --needed --noconfirm base-devel git unzip
 
 if ! command -v yay &>/dev/null; then
 
@@ -36,7 +36,7 @@ fi
 echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing Required Pacman Packages ==========>\e[0m\n\n"
 sleep 2
 
-sudo pacman -S --noconfirm \
+sudo pacman -S --needed --noconfirm \
   playerctl \
   pqiv \
   mpv \
@@ -83,7 +83,7 @@ sudo pacman -S --noconfirm \
 echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing Neovim(LazyVim) Editor ==========>\e[0m\n\n"
 sleep 2
 
-sudo pacman -S --noconfirm neovim
+sudo pacman -S --needed --noconfirm neovim
 
 # Setup LazyVim configuration for neovim
 [ -d ~/.config/nvim ] && mv ~/.config/nvim ~/.config/nvim.backup.$(date +%s)
@@ -93,7 +93,7 @@ rm -rf ~/.config/nvim/.git
 
 echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing Required AUR Packages With YAY ==========>\e[0m\n\n"
 
-yay -S --noconfirm \
+yay -S --needed --noconfirm \
   brave-bin \
   localsend-bin \
   wayfreeze-git \
@@ -111,7 +111,7 @@ if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null |
   sleep 2
 
   # Install snapper and dependencies
-  sudo pacman -S --noconfirm snapper btrfs-progs inotify-tools libnotify snap-pac rsync jre-openjdk-headless
+  sudo pacman -S --needed --noconfirm snapper btrfs-progs inotify-tools libnotify snap-pac rsync jre-openjdk-headless
 
   echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing limine-snapper-sync For Easy Rollbacks ==========>\e[0m\n\n"
 
@@ -119,7 +119,7 @@ if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null |
   [ -f /boot/limine.conf ] && [ -f /boot/limine/limine.conf ] && sudo mv /boot/limine/limine.conf /boot/limine/limine.conf.backup.$(date +%s)
 
   # Install limine-mkinitcpio-hook and limine-snapper-sync
-  yay -S --noconfirm limine-mkinitcpio-hook limine-snapper-sync
+  yay -S --needed --noconfirm limine-mkinitcpio-hook limine-snapper-sync
 
   echo -e "\n\n\e[1;38;2;162;221;157m<========== Configuring Limine and Snapper ==========>\e[0m\n\n"
   sleep 2
@@ -144,22 +144,24 @@ else
 
 fi
 
-echo -e "\n\n\e[1;38;2;162;221;157m<========== Adding Stable Repository for Walker ==========>\e[0m\n\n"
-sleep 2
-
-if ! grep -q "\[omarchy\]" /etc/pacman.conf; then
-  echo -e "\n[omarchy]\nSigLevel = Optional TrustAll\nInclude = /etc/pacman.d/omarchy-mirrorlist" | sudo tee -a /etc/pacman.conf
-fi
-
-if [ ! -f /etc/pacman.d/omarchy-mirrorlist ]; then
-  echo "Server = https://pkgs.omarchy.org/stable/\$arch" | sudo tee /etc/pacman.d/omarchy-mirrorlist
-fi
-
-sudo pacman -Sy
-
 echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing Walker and its Dependencies ==========>\e[0m\n\n"
 sleep 2
-sudo pacman -S --noconfirm omarchy-walker
+
+yay -S --needed --noconfirm \
+  walker \
+  elephant \
+  elephant-bluetooth \
+  elephant-calc \
+  elephant-clipboard \
+  elephant-desktopapplications \
+  elephant-files \
+  elephant-menus \
+  elephant-providerlist \
+  elephant-runner \
+  elephant-symbols \
+  elephant-todo \
+  elephant-unicode \
+  elephant-websearch
 
 echo -e "\n\n\e[1;38;2;162;221;157m<========== Autostart Walker and Run Elephant as Systemd Service  ==========>\e[0m\n\n"
 sleep 2
