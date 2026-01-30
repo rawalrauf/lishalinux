@@ -6,7 +6,7 @@
 
 set -e
 
-echo -e "\n\n\e[1;38;2;162;221;157m<========== Lishalinux Installation Script ==========>\e[0m\n\n"
+echo -e "\n\e[1;38;2;162;221;157m<========== Lishalinux Installation Script ==========>\e[0m\n"
 
 # Keep sudo alive throughout the script
 sudo -v
@@ -16,14 +16,14 @@ while true; do
   kill -0 "$$" || exit
 done 2>/dev/null &
 
-echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing AUR Dependencies ==========>\e[0m\n\n"
+echo -e "\n\e[1;38;2;162;221;157m Installing AUR Dependencies ...\e[0m\n"
 sleep 2
 
 sudo pacman -S --needed --noconfirm base-devel git unzip
 
 if ! command -v yay &>/dev/null; then
 
-  echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing AUR Helper YAY ==========>\e[0m\n\n"
+  echo -e "\n\e[1;38;2;162;221;157m Installing AUR Helper YAY ...\e[0m\n"
   sleep 2
 
   cd /tmp
@@ -33,7 +33,7 @@ if ! command -v yay &>/dev/null; then
   cd ~
 fi
 
-echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing Required Pacman Packages ==========>\e[0m\n\n"
+echo -e "\n\e[1;38;2;162;221;157m Installing Required Pacman Packages ...\e[0m\n"
 sleep 2
 
 sudo pacman -S --needed --noconfirm \
@@ -80,7 +80,7 @@ sudo pacman -S --needed --noconfirm \
   starship \
   ffmpeg
 
-echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing Neovim(LazyVim) Editor ==========>\e[0m\n\n"
+echo -e "\n\e[1;38;2;162;221;157m Installing Neovim(LazyVim) Editor ...\e[0m\n"
 sleep 2
 
 sudo pacman -S --needed --noconfirm neovim
@@ -91,7 +91,7 @@ sudo pacman -S --needed --noconfirm neovim
 git clone https://github.com/LazyVim/starter ~/.config/nvim
 rm -rf ~/.config/nvim/.git
 
-echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing Required AUR Packages With YAY ==========>\e[0m\n\n"
+echo -e "\n\e[1;38;2;162;221;157m Installing Required AUR Packages With YAY ...\e[0m\n"
 
 yay -S --needed --noconfirm \
   brave-bin \
@@ -102,18 +102,18 @@ yay -S --needed --noconfirm \
   waybar-active-last \
   xdg-terminal-exec
 
-echo -e "\n\n\e[1;38;2;162;221;157m<========== Detecting Limine Bootloader, Btrfs File System & UEFI ==========>\e[0m\n\n"
+echo -e "\n\e[1;38;2;162;221;157m Detecting Limine Bootloader, Btrfs File System & UEFI ...\e[0m\n"
 sleep 2
 
 if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null | grep -q .) && findmnt -n -o FSTYPE / | grep -q btrfs && [[ -d /sys/firmware/efi ]]; then
 
-  echo -e "\n\n\e[1;38;2;162;221;157m<========== Limine, Btrfs & UEFI Detected, Installing Dependencies ==========>\e[0m\n\n"
+  echo -e "\n\e[1;38;2;162;221;157m Limine, Btrfs & UEFI Detected, Installing Dependencies ...\e[0m\n"
   sleep 2
 
   # Install snapper and dependencies
   sudo pacman -S --needed --noconfirm snapper btrfs-progs inotify-tools libnotify snap-pac rsync jre-openjdk-headless
 
-  echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing limine-snapper-sync For Easy Rollbacks ==========>\e[0m\n\n"
+  echo -e "\n\e[1;38;2;162;221;157m Installing limine-snapper-sync For Easy Rollbacks ...\e[0m\n"
 
   # Remove/backup conflicting /boot/limine/limine.conf, cause /boot/limine.conf already available
   [ -f /boot/limine.conf ] && [ -f /boot/limine/limine.conf ] && sudo mv /boot/limine/limine.conf /boot/limine/limine.conf.backup.$(date +%s)
@@ -121,7 +121,7 @@ if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null |
   # Install limine-mkinitcpio-hook and limine-snapper-sync
   yay -S --needed --noconfirm limine-mkinitcpio-hook limine-snapper-sync
 
-  echo -e "\n\n\e[1;38;2;162;221;157m<========== Configuring Limine and Snapper ==========>\e[0m\n\n"
+  echo -e "\n\e[1;38;2;162;221;157m Configuring Limine and Snapper ...\e[0m\n"
   sleep 2
 
   # Configure snapshot limits
@@ -135,16 +135,15 @@ if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null |
   # Enable limine-snapper-sync service
   sudo systemctl enable --now limine-snapper-sync.service
 
-  echo -e "\n\n\e[1;38;2;162;221;157m<========== Snapshots Rollbacks Setup Complete ==========>\e[0m\n\n"
+  echo -e "\n\e[1;38;2;162;221;157m Snapshots Rollbacks Setup Complete \e[0m\n"
 
 else
-  echo "Limine bootloader, Btrfs or UEFI not detected. Skipping snapper setup."
-  echo -e "\n\n\e[1;38;2;162;221;157m<========== Limine Bootloader, Btrfs or UEFI not Detected, Skipping Snapper Setup ==========>\e[0m\n\n"
+  echo -e "\n\e[1;38;2;162;221;157m Limine Bootloader, Btrfs or UEFI not Detected, Skipping Snapper Setup ...\e[0m\n"
   sleep 2
 
 fi
 
-echo -e "\n\n\e[1;38;2;162;221;157m<========== Installing Walker and its Dependencies ==========>\e[0m\n\n"
+echo -e "\n\e[1;38;2;162;221;157m Installing Walker and its Dependencies ...\e[0m\n"
 sleep 2
 
 yay -S --needed --noconfirm \
@@ -163,16 +162,16 @@ yay -S --needed --noconfirm \
   elephant-unicode \
   elephant-websearch
 
-echo -e "\n\n\e[1;38;2;162;221;157m<========== Autostart Walker and Run Elephant as Systemd Service  ==========>\e[0m\n\n"
+echo -e "\n\e[1;38;2;162;221;157m Autostart Walker and Run Elephant as Systemd Service  ...\e[0m\n"
 sleep 2
 
-pkill elephant || echo "elephant is not running, starting it now"
+pkill elephant || echo "elephant is not running, starting it now ..."
 elephant service enable
 systemctl --user start elephant.service
-pkill walker || echo "walker is not running, starting it now"
+pkill walker || echo "walker is not running, starting it now ..."
 setsid walker --gapplication-service &
 
-echo -e "\n\n\e[1;38;2;162;221;157m<========== Creating Backup For Existing Configs ==========>\e[0m\n\n"
+echo -e "\n\e[1;38;2;162;221;157m Creating Backup For Existing Configs ...\e[0m\n"
 sleep 2
 
 cd ~/lishalinux
@@ -194,7 +193,7 @@ cd ~/lishalinux
 [ -f ~/.config/starship.toml ] && mv ~/.config/starship.toml ~/.config/starship.toml.backup.$(date +%s)
 [ -f ~/.config/xdg-terminals.list ] && mv ~/.config/xdg-terminals.list ~/.config/xdg-terminals.list.backup.$(date +%s)
 
-echo -e "\n\n\e[1;38;2;162;221;157m<========== Copying Lishalinux Configs To Desired Locations ==========>\e[0m\n\n"
+echo -e "\n\e[1;38;2;162;221;157m Copying Lishalinux Configs To Desired Locations ...\e[0m\n"
 sleep 2
 
 cp -r ghostty swayosd elephant mako walker waybar uwsm autostart hypr ~/.config/
@@ -213,26 +212,26 @@ cp -r applications ~/.local/share/
 # Copy lishalinux scripts
 cp -r lishalinux ~/.local/share/
 
-echo -e "\n\n\e[1;38;2;162;221;157m<========== Making Scripts Executable ==========>\e[0m\n\n"
+echo -e "\n\e[1;38;2;162;221;157m Making Scripts Executable ...\e[0m\n"
 sleep 2
 
 chmod +x ~/.local/share/lishalinux/bin/*
 chmod +x ~/.local/share/lishalinux/default/waybar/indicators/screen-recording.sh
 sleep 2
 
-echo -e "\n\n\e[1;38;2;162;221;157m<========== Reloading Bashrc for Changes to Work ==========>\e[0m\n\n"
+echo -e "\n\e[1;38;2;162;221;157m Reloading Bashrc for Changes to Work ...\e[0m\n"
 sleep 2
 
 source ~/.bashrc
 
-echo -e "\n\n\e[1;38;2;162;221;157m<========== Enable Darkmode for Gnome Applications ==========>\e[0m\n\n"
+echo -e "\n\e[1;38;2;162;221;157m Enable Darkmode for Gnome Applications ...\e[0m\n"
 sleep 2
 
 gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 gsettings set org.gnome.desktop.interface icon-theme 'Yaru-purple'
 
-echo -e "\n\n\e[1;38;2;162;221;157m<========== Installation Complete, Reboot for Changes to Work ==========>\e[0m\n\n"
+echo -e "\n\e[1;38;2;162;221;157m Installation Complete, Reboot for Changes to Work ...\e[0m\n"
 sleep 2
 
 # Ask for reboot
@@ -240,13 +239,13 @@ read -p "Would you like to reboot now? (y/n): " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
 
-  echo -e "\n\n\e[1;38;2;162;221;157m<========== Rebooting in 2 Seconds ==========>\e[0m\n\n"
+  echo -e "\n\e[1;38;2;162;221;157m Rebooting in 2 Seconds ...\e[0m\n"
   sleep 2
 
   sudo reboot
 else
 
-  echo -e "\n\n\e[1;38;2;162;221;157m<========== Please Reboot for Changes to Work ==========>\e[0m\n\n"
+  echo -e "\n\e[1;38;2;162;221;157m Please Reboot for Changes to Work !\e[0m\n"
   sleep 2
 
 fi
