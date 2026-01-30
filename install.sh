@@ -71,7 +71,6 @@ sudo pacman -S --needed --noconfirm \
   gnome-disk-utility \
   xdg-desktop-portal-gtk \
   gnome-themes-extra \
-  yaru-icon-theme \
   lazygit \
   evince \
   eza \
@@ -100,7 +99,8 @@ yay -S --needed --noconfirm \
   satty-git \
   gpu-screen-recorder \
   waybar-active-last \
-  xdg-terminal-exec
+  xdg-terminal-exec \
+  yaru-icon-theme
 
 echo -e "\n\e[1;38;2;162;221;157m Detecting Limine Bootloader, Btrfs File System & UEFI ...\e[0m\n"
 sleep 2
