@@ -11,7 +11,7 @@ LIB_DIR="$HOME/lishalinux/helpers/lib"
 
 source "$LIB_DIR/common.sh"
 print_banner "<========== Lishalinux Installer ==========>"
-keep_sudo_alive
+# keep_sudo_alive
 
 # Step 0: Install core dependencies
 source "$STEP_DIR/00-base.sh"
