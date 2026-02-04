@@ -11,7 +11,7 @@ if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null |
 
   print_banner "Limine, Btrfs & UEFI Detected - Installing Snapshot Dependencies"
 
-  sudo pacman -S --needed --noconfirm snapper btrfs-progs inotify-tools libnotify snap-pac rsync jre-openjdk-headless
+  sudo pacman -S --needed --noconfirm snapper btrfs-progs inotify-tools libnotify snap-pac rsync
 
   print_banner "Installing limine-snapper-sync and mkinitcpio hook..."
 
