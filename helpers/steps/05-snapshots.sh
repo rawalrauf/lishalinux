@@ -18,8 +18,11 @@ if (pacman -Q limine &>/dev/null || find /boot -name 'limine.conf' 2>/dev/null |
   # Backup existing conflicting limine.conf if detected to remove error
   [ -f /boot/limine.conf ] && [ -f /boot/limine/limine.conf ] && sudo mv /boot/limine/limine.conf /boot/limine/limine.conf.backup.$(date +%s)
 
-  # Install via yay
-  yay -S --needed --noconfirm limine-mkinitcpio-hook limine-snapper-sync
+  # Install via yay ( depriated )
+  # yay -S --needed --noconfirm limine-mkinitcpio-hook limine-snapper-sync
+
+  # Install via pacman instead of yay
+  sudo pacman -S --needed --noconfirm limine-mkinitcpio-hook limine-snapper-sync
 
   print_banner "Configuring Snapper"
 

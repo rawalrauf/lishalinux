@@ -11,7 +11,7 @@ LIB_DIR="$HOME/lishalinux/helpers/lib"
 
 source "$LIB_DIR/common.sh"
 print_banner "<========== Lishalinux Installer ==========>"
-# keep_sudo_alive
+keep_sudo_alive
 
 # Step 0: Install core dependencies
 source "$STEP_DIR/00-base.sh"
@@ -25,6 +25,8 @@ source "$STEP_DIR/02-pacman-apps.sh"
 # Step 3: Install Neovim + LazyVim if not already setup
 source "$STEP_DIR/03-neovim.sh"
 
+customRepoAdd
+
 # Step 4: Install AUR packages
 source "$STEP_DIR/04-aur-apps.sh"
 
@@ -34,6 +36,7 @@ source "$STEP_DIR/05-snapshots.sh"
 # Step 6: Install Walker + Elephant packages and start services
 source "$STEP_DIR/06-walker.sh"
 
+customRepoRemove
 # Step 7: Backup existing configs and copy Lishalinux custom configs
 source "$STEP_DIR/07-configs.sh"
 
@@ -43,5 +46,4 @@ source "$STEP_DIR/08-permissions.sh"
 # Step 9: Set Gnome dark mode + GTK + icon themes
 source "$STEP_DIR/09-theme.sh"
 
-# Step 10: Prompt for reboot
-source "$STEP_DIR/10-reboot.sh"
+print_banner "<========== Installation finished ==========>"

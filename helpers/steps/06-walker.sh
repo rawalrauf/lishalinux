@@ -6,26 +6,29 @@ set -e
 
 print_banner "Installing Walker and Elephant Packages"
 
-# List of Elephant packages we want explicitly
-ELEPHANT_PKGS=(
-  elephant
-  elephant-bluetooth
-  elephant-calc
-  elephant-clipboard
-  elephant-desktopapplications
-  elephant-files
-  elephant-menus
-  elephant-providerlist
-  elephant-runner
-  elephant-symbols
-  elephant-todo
-  elephant-unicode
-  elephant-websearch
-)
+# List of Elephant packages we want explicitly ( depricated )
+# ELEPHANT_PKGS=(
+#    elephant
+#    elephant-bluetooth
+#    elephant-calc
+#    elephant-clipboard
+#    elephant-desktopapplications
+#    elephant-files
+#    elephant-menus
+#    elephant-providerlist
+#    elephant-runner
+#    elephant-symbols
+#    elephant-todo
+#    elephant-unicode
+#    elephant-websearch
+#  )
 
-# Install walker + Elephant subpackages, ignoring elephant-all packages
-yay -S --needed --noconfirm walker "${ELEPHANT_PKGS[@]}" \
-  --ignore elephant-all --ignore elephant-all-bin --ignore elephant-all-git
+# Install walker + Elephant subpackages, ignoring elephant-all packages ( depricated )
+#  yay -S --needed --noconfirm walker "${ELEPHANT_PKGS[@]}" \
+#    --ignore elephant-all --ignore elephant-all-bin --ignore elephant-all-git
+
+# Install via pacman
+sudo pacman -S --needed --noconfirm omarchy-walker
 
 # Start Elephant service if not running
 if ! pgrep -x elephant &>/dev/null; then

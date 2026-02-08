@@ -19,3 +19,36 @@ keep_sudo_alive() {
     kill -0 "$$" || exit
   done 2>/dev/null &
 }
+
+customRepoAdd() {
+  # Add repo block if missing
+  if ! sudo grep -q "^\[omarchy\]" /etc/pacman.conf; then
+    sudo tee -a /etc/pacman.conf >/dev/null <<'EOF'
+
+[omarchy]
+SigLevel = Optional TrustAll
+Include = /etc/pacman.d/omarchy-mirrorlist
+EOF
+  fi
+
+  # Create mirrorlist
+  sudo tee /etc/pacman.d/omarchy-mirrorlist >/dev/null <<'EOF'
+Server = https://pkgs.omarchy.org/stable/$arch
+EOF
+
+  # Sync pacman
+  sudo pacman -Sy --noconfirm
+}
+
+customRepoRemove() {
+  # Remove repo block safely
+  if sudo grep -q "^\[omarchy\]" /etc/pacman.conf; then
+    sudo sed -i '/^\[omarchy\]/,/^$/d' /etc/pacman.conf
+  fi
+
+  # Remove mirrorlist
+  sudo rm -f /etc/pacman.d/omarchy-mirrorlist
+
+  # Sync pacman
+  sudo pacman -Sy --noconfirm
+}
