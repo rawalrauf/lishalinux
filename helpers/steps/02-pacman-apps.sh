@@ -47,4 +47,6 @@ sudo pacman -S --needed --noconfirm \
   bat \
   zoxide \
   starship \
+  satty \
+  gpu-screen-recorder \
   ffmpeg
