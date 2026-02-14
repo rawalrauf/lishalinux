@@ -11,8 +11,6 @@ print_banner "Installing Required AUR Packages"
 # brave-bin \
 # localsend-bin \
 # wayfreeze-git \
-# satty-git \
-# gpu-screen-recorder \
 # waybar-active-last \
 # xdg-terminal-exec \
 # yaru-icon-theme
@@ -26,7 +24,5 @@ yay -S --needed --noconfirm \
 sudo pacman -S --needed --noconfirm \
   localsend \
   wayfreeze \
-  satty \
-  gpu-screen-recorder \
   xdg-terminal-exec \
   yaru-icon-theme
