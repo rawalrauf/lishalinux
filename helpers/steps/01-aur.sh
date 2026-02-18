@@ -14,7 +14,7 @@ if ! command -v yay &>/dev/null; then
   git clone https://aur.archlinux.org/yay.git
   cd yay
   makepkg -si --noconfirm
-  cd ~
+  cd $HOME
 else
   print_banner "yay is already installed. Skipping..."
 fi
