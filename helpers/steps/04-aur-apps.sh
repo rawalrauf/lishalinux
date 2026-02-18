@@ -17,12 +17,12 @@ print_banner "Installing Required AUR Packages"
 
 #Install via yay
 yay -S --needed --noconfirm \
-  waybar-active-last \
   brave-bin
 
 # Install via pacman instead of yay
 sudo pacman -S --needed --noconfirm \
   localsend \
+  waybar \
   wayfreeze \
   xdg-terminal-exec \
   yaru-icon-theme
